@@ -1,0 +1,44 @@
+{
+  "name": "app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.84.0",
+    "@tiptap/extension-code-block-lowlight": "^3.11.0",
+    "@tiptap/extension-color": "^3.11.0",
+    "@tiptap/extension-highlight": "^3.11.0",
+    "@tiptap/extension-image": "^3.11.0",
+    "@tiptap/extension-link": "^3.11.0",
+    "@tiptap/extension-placeholder": "^3.11.0",
+    "@tiptap/extension-text-align": "^3.11.0",
+    "@tiptap/extension-text-style": "^3.11.0",
+    "@tiptap/extension-underline": "^3.11.0",
+    "@tiptap/pm": "^3.11.0",
+    "@tiptap/react": "^3.11.0",
+    "@tiptap/starter-kit": "^3.11.0",
+    "lowlight": "^3.3.0",
+    "lucide-react": "^0.554.0",
+    "next": "16.0.4",
+    "nodemailer": "^7.0.11",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/nodemailer": "^7.0.4",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.4",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+/*
+  디자인 시스템: Professional Clean
+  - 무채색 기반 (zinc 계열)
+  - 단색 우선, 그라디언트 최소화
+  - 명확한 간격 체계 (8px 단위)
+*/
+
+:root {
+  /* 배경 색상 */
+  --background: #FAFAFA;
+  --surface: #FFFFFF;
+
+  /* 텍스트 색상 */
+  --foreground: #18181B;
+  --foreground-muted: #71717A;
+
+  /* 보더 색상 */
+  --border: #E4E4E7;
+  --border-strong: #A1A1AA;
+
+  /* 강조 색상 (최소 사용) */
+  --accent: #3F3F46;
+  --accent-hover: #27272A;
+
+  /* 상태 색상 (저채도) */
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --error: #EF4444;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 전역 스타일 리셋 */
+* {
+  box-sizing: border-box;
+}
+
+/* 인풋 필드 기본 스타일 */
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* 버튼 기본 스타일 리셋 */
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* 스크롤바 숨기기 유틸리티 */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}

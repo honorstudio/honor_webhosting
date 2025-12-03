@@ -1,0 +1,307 @@
+<style>
+.onul-section01 {
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 120px 280px 250px 280px;
+  background-color: #fff;
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: visible;
+}
+
+.onul-section01-container {
+  width: 100%;
+  display: flex;
+  gap: 80px;
+  align-items: flex-start;
+  position: relative;
+}
+
+.onul-section01-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.onul-section01-title {
+  margin-bottom: 60px;
+}
+
+.onul-section01-title h2 {
+  margin: 0;
+  font-size: 45px;
+  line-height: 1.3;
+  font-family: 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #000000 !important;
+}
+
+.onul-section01-title h2:first-child {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.onul-section01-title h2:last-child {
+  font-weight: 400;
+}
+
+.onul-section01-text {
+  font-size: 20px;
+  line-height: 1.5;
+  font-family: 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  color: #000;
+}
+
+.onul-section01-text p {
+  margin: 0 0 30px 0;
+}
+
+.onul-section01-text strong {
+  font-weight: 600;
+}
+
+.onul-section01-signature {
+  margin-top: 30px;
+  font-weight: 600;
+}
+
+.onul-section01-decoration {
+  flex-shrink: 0;
+  width: 618px;
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+}
+
+.onul-section01-decoration-col {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  flex: 1;
+}
+
+.onul-section01-capsule {
+  width: 158px;
+  height: 198px;
+  background-color: #e6e6e6;
+  border-radius: 79px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.onul-section01-curve {
+  position: absolute;
+  bottom: -150px;
+  right: -200px;
+  width: 400px;
+  height: auto;
+  z-index: 1;
+}
+
+.onul-section01-curve svg {
+  width: 100%;
+  height: auto;
+}
+
+/* 태블릿 */
+@media (max-width: 1440px) {
+  .onul-section01 {
+    padding: 60px 60px 200px 60px;
+  }
+
+  .onul-section01-title h2 {
+    font-size: 36px;
+  }
+
+  .onul-section01-text {
+    font-size: 18px;
+  }
+
+  .onul-section01-decoration {
+    width: 480px;
+    gap: 36px;
+  }
+
+  .onul-section01-capsule {
+    width: 130px;
+    height: 163px;
+    border-radius: 65px;
+  }
+
+  .onul-section01-decoration-col {
+    gap: 40px;
+  }
+
+  .onul-section01-curve {
+    bottom: -120px;
+    right: 0;
+    width: 300px;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  .onul-section01 {
+    padding: 60px 40px 180px 40px;
+    min-height: auto;
+  }
+
+  .onul-section01-container {
+    flex-direction: column;
+    gap: 60px;
+  }
+
+  .onul-section01-content {
+    max-width: 100%;
+    order: 1;
+  }
+
+  .onul-section01-decoration {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    gap: 24px;
+    justify-content: center;
+    order: 2;
+  }
+
+  .onul-section01-curve {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    width: 200px;
+    margin-left: auto;
+    order: 3;
+  }
+
+  .onul-section01-title {
+    margin-bottom: 40px;
+  }
+
+  .onul-section01-title h2 {
+    font-size: 28px;
+  }
+
+  .onul-section01-text {
+    font-size: 16px;
+  }
+
+  .onul-section01-capsule {
+    width: 100px;
+    height: 125px;
+    border-radius: 50px;
+  }
+
+  .onul-section01-decoration-col {
+    gap: 24px;
+  }
+
+  .onul-section01-text p {
+    margin-bottom: 24px;
+  }
+}
+
+/* 작은 모바일 */
+@media (max-width: 480px) {
+  .onul-section01 {
+    padding: 40px 20px 150px 20px;
+  }
+
+  .onul-section01-title h2 {
+    font-size: 24px;
+  }
+
+  .onul-section01-text {
+    font-size: 15px;
+  }
+
+  .onul-section01-decoration {
+    max-width: 300px;
+    gap: 16px;
+  }
+
+  .onul-section01-capsule {
+    width: 80px;
+    height: 100px;
+    border-radius: 40px;
+  }
+
+  .onul-section01-decoration-col {
+    gap: 16px;
+  }
+
+  .onul-section01-text p {
+    margin-bottom: 20px;
+  }
+
+  .onul-section01-curve {
+    width: 150px;
+  }
+}
+</style>
+
+<section class="onul-section01">
+  <div class="onul-section01-container">
+    <div class="onul-section01-content">
+      <div class="onul-section01-title">
+        <h2>공간의 가치를 새롭게,</h2>
+        <h2>일상의 청결을 책임지는 오늘 입니다.</h2>
+      </div>
+
+      <div class="onul-section01-text">
+        <p>
+          오늘청소는 단순한 청소 서비스가 아닌, 삶의 질을 높이는 생활 솔루션을 제공하고자 하는 마음에서 시작되었습니다. 우리는 매일 수많은 공간을 만나며, 그 안에서 살아가는 사람들의 다양한 삶과 마주합니다. 그래서 오늘청소는 청소를 단순한 '일'이 아닌 <strong>사람과 공간을 연결하는 일'</strong> 로 바라봅니다.
+        </p>
+
+        <p>
+          지금까지 우리는 입주청소, 거주청소, 특수청소, 가전클리닝, 기업 및 관공서 대상의 정기 청소 등 다양한 분야에서 경험과 노하우를 쌓아왔으며, 철저한 교육을 받은 전문 마스터들과 함께 고객 만족 그 이상의 가치를 창출하고자 노력해왔습니다.
+        </p>
+
+        <p>
+          우리는 청소의 품질만큼 고객의 신뢰를 가장 중요하게 생각합니다. 불필요한 비용 없이, 투명하고 정직한 서비스로 다시 찾고 싶은 청소 브랜드가 되기 위해 오늘도 한 걸음씩 성장하고 있습니다.
+        </p>
+
+        <p>
+          또한, ONUL은 지속 가능한 청소 문화를 위해 끊임없이 고민하고 있습니다. 에코 세제 사용 확대, 서비스 표준화, 고객 맞춤형 케어 시스템 등 보다 건강하고 안전한 청소 환경을 위한 노력을 멈추지 않겠습니다.
+        </p>
+
+        <p>
+          여러분의 소중한 공간이 더 깨끗하고 편안해질 수 있도록,<br>
+          그리고 여러분의 오늘이 조금 더 여유롭고 행복해질 수 있도록<br>
+          오늘청소는 언제나 곁에서 함께하겠습니다.
+        </p>
+
+        <p>감사합니다.</p>
+
+        <p class="onul-section01-signature">오늘청소 | ONUL 드림</p>
+      </div>
+    </div>
+
+    <div class="onul-section01-decoration">
+      <div class="onul-section01-decoration-col">
+        <div class="onul-section01-capsule" style="background-image: url('https://cdn.imweb.me/upload/S202411166380e02dc267b/f11dd5a595b85.jpg');"></div>
+        <div class="onul-section01-capsule" style="background-image: url('https://cdn.imweb.me/upload/S202411166380e02dc267b/5adb0b6c2c0f4.jpg');"></div>
+        <div class="onul-section01-capsule" style="background-image: url('https://cdn.imweb.me/upload/S202411166380e02dc267b/6572b83682aca.jpg');"></div>
+      </div>
+      <div class="onul-section01-decoration-col">
+        <div class="onul-section01-capsule" style="background-image: url('https://cdn.imweb.me/upload/S202411166380e02dc267b/9293411fa0f34.jpg');"></div>
+        <div class="onul-section01-capsule" style="background-image: url('https://cdn.imweb.me/upload/S202411166380e02dc267b/cba0b499f43fa.jpg');"></div>
+        <div class="onul-section01-capsule" style="background-image: url('https://cdn.imweb.me/upload/S202411166380e02dc267b/5be3183ff6ad3.jpg');"></div>
+      </div>
+      <div class="onul-section01-decoration-col">
+        <div class="onul-section01-capsule" style="background-image: url('https://cdn.imweb.me/upload/S202411166380e02dc267b/0cc85a001f1f1.jpg');"></div>
+        <div class="onul-section01-capsule" style="background-image: url('https://cdn.imweb.me/upload/S202411166380e02dc267b/398a5cac3eccb.jpg');"></div>
+        <div class="onul-section01-capsule" style="background-image: url('https://cdn.imweb.me/upload/S202411166380e02dc267b/cb89d0965519d.jpg');"></div>
+      </div>
+    </div>
+
+    <div class="onul-section01-curve">
+      <svg xmlns="http://www.w3.org/2000/svg" width="332.505" height="332.505" viewBox="0 0 332.505 332.505">
+        <path id="패스_10" data-name="패스 10" d="M190.91,516.116H352.986c93.978,0,170.429-76.451,170.429-170.429V183.611h-64.9V345.687A105.654,105.654,0,0,1,352.986,451.215H190.91Z" transform="translate(-190.91 -183.611)" fill="#deebff"/>
+      </svg>
+    </div>
+  </div>
+</section>

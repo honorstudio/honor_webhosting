@@ -1,0 +1,450 @@
+
+  <style>
+    /* 기본 리셋 */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+  </style>
+<style>
+/* Section02 메인 컨테이너 */
+.onul-section02 {
+  width: 100% !important;
+  max-width: 1920px !important;
+  margin: 0 auto !important;
+  padding: 60px 20px !important;
+  background-color: #fff !important;
+  box-sizing: border-box !important;
+}
+
+/* 상단 이미지 컨테이너 */
+.onul-section02-top-image-wrapper {
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  margin: 0 0 40px 0 !important;
+  padding: 0 !important;
+}
+
+/* 상단 이미지 */
+.onul-section02-top-image {
+  width: 70% !important;
+  height: auto !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 제목 */
+.onul-section02-title {
+  font-size: 32px !important;
+  font-weight: 700 !important;
+  color: #003876 !important;
+  text-align: center !important;
+  margin: 0 0 40px 0 !important;
+  padding: 0 !important;
+}
+
+/* 테이블 래퍼 */
+.onul-section02-table-wrapper {
+  width: 70% !important;
+  overflow-x: auto !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+/* 테이블 */
+.onul-section02-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-width: 800px !important;
+}
+
+/* 테이블 셀 공통 */
+.onul-section02-table th,
+.onul-section02-table td {
+  border: 1px solid #ddd !important;
+  padding: 12px !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+}
+
+/* 왼쪽 라벨 셀 */
+.onul-section02-label {
+  background-color: #f5f5f5 !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #333 !important;
+  width: 120px !important;
+  min-width: 120px !important;
+}
+
+/* 비전 셀 */
+.onul-section02-vision {
+  background-color: #003876 !important;
+  color: #fff !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  padding: 30px 20px !important;
+}
+
+/* 전략 헤더 */
+.onul-section02-strategy-header {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: #fff !important;
+  padding: 10px 15px !important;
+  margin: 0 !important;
+}
+
+/* 전략 설명 */
+.onul-section02-strategy-desc {
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+  padding: 5px 15px !important;
+  color: #fff !important;
+}
+
+/* 전략 컬럼 - 사람 */
+.onul-section02-strategy-people {
+  background-color: #dc3545 !important;
+}
+
+/* 전략 컬럼 - 번영 */
+.onul-section02-strategy-prosperity {
+  background-color: #0066cc !important;
+}
+
+/* 전략 컬럼 - 환경 */
+.onul-section02-strategy-environment {
+  background-color: #28a745 !important;
+}
+
+/* 전략 컬럼 - 평화협력 */
+.onul-section02-strategy-peace {
+  background-color: #8b5a3c !important;
+}
+
+/* 목표 셀 */
+.onul-section02-goals-cell {
+  background-color: #fff !important;
+}
+
+/* 목표 리스트 */
+.onul-section02-goals {
+  text-align: left !important;
+  padding: 12px !important;
+  margin: 0 !important;
+}
+
+.onul-section02-goal-item {
+  margin: 0 0 12px 0 !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  color: #333 !important;
+}
+
+.onul-section02-goal-item:last-child {
+  margin-bottom: 0 !important;
+}
+
+.onul-section02-goal-num {
+  font-weight: 700 !important;
+  color: #003876 !important;
+  margin-right: 5px !important;
+}
+
+/* 출처 */
+.onul-section02-source {
+  text-align: center !important;
+  margin: 30px 0 0 0 !important;
+  padding: 0 !important;
+  font-size: 14px !important;
+  color: #666 !important;
+}
+
+/* 중간 화면 (1024px ~ 1199px) - 테이블 잘림 방지 */
+@media (max-width: 1199px) {
+  .onul-section02-table-wrapper {
+    width: 100% !important;
+  }
+
+  .onul-section02-top-image {
+    width: 100% !important;
+  }
+}
+
+/* 태블릿 (768px ~ 1023px) */
+@media (max-width: 1023px) {
+  .onul-section02 {
+    padding: 40px 15px !important;
+  }
+
+  .onul-section02-title {
+    font-size: 28px !important;
+    margin-bottom: 30px !important;
+  }
+
+  .onul-section02-vision {
+    font-size: 20px !important;
+    padding: 25px 15px !important;
+  }
+
+  .onul-section02-strategy-header {
+    font-size: 16px !important;
+  }
+
+  .onul-section02-strategy-desc {
+    font-size: 13px !important;
+  }
+
+  .onul-section02-goal-item {
+    font-size: 13px !important;
+  }
+}
+
+/* 모바일 (767px 이하) */
+@media (max-width: 767px) {
+  .onul-section02 {
+    padding: 30px 10px !important;
+  }
+
+  /* 모바일에서 상단 이미지 100% */
+  .onul-section02-top-image {
+    width: 100% !important;
+  }
+
+  .onul-section02-title {
+    font-size: 24px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* 모바일에서는 테이블을 블록 형태로 변환 */
+  .onul-section02-table-wrapper {
+    width: 100% !important;
+    overflow-x: visible !important;
+  }
+
+  .onul-section02-table {
+    min-width: 100% !important;
+    display: block !important;
+  }
+
+  .onul-section02-table tbody {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+  }
+
+  .onul-section02-table tr {
+    display: contents !important;
+  }
+
+  .onul-section02-table td,
+  .onul-section02-table th {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  .onul-section02-label {
+    width: 100% !important;
+    font-size: 16px !important;
+    padding: 15px !important;
+  }
+
+  .onul-section02-vision {
+    font-size: 18px !important;
+    padding: 20px 15px !important;
+  }
+
+  .onul-section02-strategy-header {
+    font-size: 16px !important;
+    padding: 12px 15px !important;
+  }
+
+  .onul-section02-strategy-desc {
+    font-size: 13px !important;
+    padding: 10px 15px !important;
+  }
+
+  .onul-section02-goals {
+    padding: 15px !important;
+  }
+
+  .onul-section02-goal-item {
+    font-size: 13px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* 모바일에서 전략 행과 목표 행의 라벨 숨기기 */
+  .onul-section02-table tr:nth-child(2) th,
+  .onul-section02-table tr:nth-child(3) th {
+    display: none !important;
+  }
+
+  /* 모바일에서 전략 셀 order */
+  .onul-section02-table tr:nth-child(2) td:nth-child(2) { order: 1 !important; } /* 사람 전략 */
+  .onul-section02-table tr:nth-child(2) td:nth-child(3) { order: 3 !important; } /* 번영 전략 */
+  .onul-section02-table tr:nth-child(2) td:nth-child(4) { order: 5 !important; } /* 환경 전략 */
+  .onul-section02-table tr:nth-child(2) td:nth-child(5) { order: 7 !important; } /* 평화협력 전략 */
+
+  /* 모바일에서 목표 셀 order */
+  .onul-section02-table tr:nth-child(3) td:nth-child(2) { order: 2 !important; } /* 사람 목표 */
+  .onul-section02-table tr:nth-child(3) td:nth-child(3) { order: 4 !important; } /* 번영 목표 */
+  .onul-section02-table tr:nth-child(3) td:nth-child(4) { order: 6 !important; } /* 환경 목표 */
+  .onul-section02-table tr:nth-child(3) td:nth-child(5) { order: 8 !important; } /* 평화협력 목표 */
+
+  /* 모바일에서 전략 및 목표 셀 간격 */
+  .onul-section02-table tr:nth-child(2) td,
+  .onul-section02-table tr:nth-child(3) td {
+    margin-bottom: 10px !important;
+  }
+}
+</style>
+
+<section class="onul-section02">
+  <!-- 상단 이미지 -->
+  <div class="onul-section02-top-image-wrapper">
+    <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/b83706dee4a3f.png" alt="섹션 이미지" class="onul-section02-top-image">
+  </div>
+
+  <!-- 제목 -->
+  <h2 class="onul-section02-title">오늘청소 비전 및 전략</h2>
+
+  <!-- 테이블 래퍼 -->
+  <div class="onul-section02-table-wrapper">
+    <table class="onul-section02-table">
+      <tbody>
+        <!-- 비전 행 -->
+        <tr>
+          <th class="onul-section02-label">비전</th>
+          <td class="onul-section02-vision" colspan="4">깨끗한 환경과 전문 서비스로 모두가 행복한 일상을 만들어갑니다</td>
+        </tr>
+
+        <!-- 전략 행 -->
+        <tr>
+          <th class="onul-section02-label">전략</th>
+          <td class="onul-section02-strategy-people">
+            <div class="onul-section02-strategy-header">고객중심</div>
+            <p class="onul-section02-strategy-desc">고객 만족과 신뢰를 최우선으로</p>
+          </td>
+          <td class="onul-section02-strategy-prosperity">
+            <div class="onul-section02-strategy-header">전문성</div>
+            <p class="onul-section02-strategy-desc">체계적 교육과 최고의 서비스 품질</p>
+          </td>
+          <td class="onul-section02-strategy-environment">
+            <div class="onul-section02-strategy-header">친환경</div>
+            <p class="onul-section02-strategy-desc">지속 가능한 청소 문화 실천</p>
+          </td>
+          <td class="onul-section02-strategy-peace">
+            <div class="onul-section02-strategy-header">사회공헌</div>
+            <p class="onul-section02-strategy-desc">지역사회와 함께 성장</p>
+          </td>
+        </tr>
+
+        <!-- 목표 행 -->
+        <tr>
+          <th class="onul-section02-label">실천<br>목표</th>
+          <td class="onul-section02-goals-cell">
+            <div class="onul-section02-goals">
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표1</span>
+                고객 만족도 95% 이상 유지
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표2</span>
+                투명한 견적과 정직한 서비스 제공
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표3</span>
+                맞춤형 청소 솔루션 개발
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표4</span>
+                24시간 신속한 고객 응대 체계
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표5</span>
+                고객 소통 채널 다양화
+              </div>
+            </div>
+          </td>
+          <td class="onul-section02-goals-cell">
+            <div class="onul-section02-goals">
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표6</span>
+                전문 마스터 양성 교육 프로그램 운영
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표7</span>
+                체계적인 품질 관리 시스템 구축
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표8</span>
+                최신 청소 기술과 장비 도입
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표9</span>
+                서비스 표준화 및 매뉴얼 구축
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표10</span>
+                정기적인 서비스 품질 평가
+              </div>
+            </div>
+          </td>
+          <td class="onul-section02-goals-cell">
+            <div class="onul-section02-goals">
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표11</span>
+                친환경 세제 사용 확대
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표12</span>
+                자원 절약형 청소 방식 도입
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표13</span>
+                탄소 배출 저감 활동 실천
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표14</span>
+                재활용 및 폐기물 최소화
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표15</span>
+                친환경 인증 획득 및 유지
+              </div>
+            </div>
+          </td>
+          <td class="onul-section02-goals-cell">
+            <div class="onul-section02-goals">
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표16</span>
+                취약계층 무료 청소 지원
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표17</span>
+                지역 일자리 창출 기여
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표18</span>
+                지역사회 봉사활동 참여
+              </div>
+              <div class="onul-section02-goal-item">
+                <span class="onul-section02-goal-num">목표19</span>
+                파트너사와 상생 협력
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

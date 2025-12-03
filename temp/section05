@@ -1,0 +1,385 @@
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .onul-section05 {
+      width: 100%;
+      max-width: 1920px;
+      margin: 0 auto;
+      background-color: #000;
+      padding: 120px 60px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .onul-section05-header {
+      margin-bottom: 80px;
+    }
+
+    .onul-section05-subtitle {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .onul-section05-title {
+      font-size: 110px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      margin-bottom: 40px;
+    }
+
+    .onul-section05-description {
+      font-size: 20px;
+      line-height: 1.75;
+      font-weight: 400;
+      color: #fff;
+      text-align: left;
+      margin-bottom: 100px;
+    }
+
+    /* 로고 슬라이더 */
+    .onul-section05-logos {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      overflow: hidden;
+      background-color: #fff;
+      padding: 80px 0;
+      position: relative;
+    }
+
+    .onul-section05-logos-track {
+      display: flex;
+      gap: 50px;
+      animation: scroll 60s linear infinite;
+      width: fit-content;
+    }
+
+    .onul-section05-logo-item {
+      flex-shrink: 0;
+      width: 200px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+    }
+
+    .onul-section05-logo-item img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-33.333%);
+      }
+    }
+
+    /* 태블릿 */
+    @media (max-width: 1440px) {
+      .onul-section05 {
+        padding: 100px 40px 0;
+      }
+
+      .onul-section05-logos {
+        padding: 60px 0;
+      }
+
+      .onul-section05-title {
+        font-size: 90px;
+        color: #fff;
+      }
+
+      .onul-section05-description {
+        font-size: 18px;
+        color: #fff;
+        margin-bottom: 80px;
+      }
+
+      .onul-section05-logo-item {
+        width: 180px;
+        height: 100px;
+      }
+
+      .onul-section05-logos-track {
+        gap: 40px;
+      }
+    }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      .onul-section05 {
+        padding: 60px 20px 0;
+      }
+
+      .onul-section05-logos {
+        padding: 40px 0;
+      }
+
+      .onul-section05-header {
+        margin-bottom: 40px;
+      }
+
+      .onul-section05-subtitle {
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 10px;
+      }
+
+      .onul-section05-title {
+        font-size: 60px;
+        color: #fff;
+        margin-bottom: 30px;
+      }
+
+      .onul-section05-description {
+        font-size: 16px;
+        color: #fff;
+        line-height: 1.7;
+        margin-bottom: 60px;
+      }
+
+      .onul-section05-logos {
+        padding: 30px 0;
+      }
+
+      .onul-section05-logo-item {
+        width: 150px;
+        height: 80px;
+      }
+
+      .onul-section05-logos-track {
+        gap: 30px;
+      }
+    }
+
+    /* 작은 모바일 */
+    @media (max-width: 480px) {
+      .onul-section05 {
+        padding: 40px 15px 0;
+      }
+
+      .onul-section05-logos {
+        padding: 30px 0;
+      }
+
+      .onul-section05-title {
+        font-size: 48px;
+        color: #fff;
+      }
+
+      .onul-section05-description {
+        font-size: 15px;
+        color: #fff;
+      }
+
+      .onul-section05-logo-item {
+        width: 120px;
+        height: 70px;
+      }
+
+      .onul-section05-logos-track {
+        gap: 20px;
+      }
+    }
+  </style>
+  <section class="onul-section05">
+    <div class="onul-section05-header">
+      <div class="onul-section05-subtitle">오늘비즈</div>
+      <div class="onul-section05-title">BIZ</div>
+      <div class="onul-section05-description">
+        기업의 규모와 업종을 막론하고 필요한 모든 서비스를 한곳에서 제공합니다.<br>
+        프랜차이즈, 대량 납품, 유지보수 등 다양한 카테고리를 아우르는 맞춤형 솔루션을 제안합니다.<br>
+        효율적이고 체계적인 지원으로 비즈니스 경쟁력을 높이고 안정적인 운영을 돕습니다.
+      </div>
+    </div>
+
+    <div class="onul-section05-logos">
+      <div class="onul-section05-logos-track">
+        <!-- 첫 번째 세트 -->
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/4072e8fea61c5.png" alt="365mc">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/4377c8048f976.png" alt="IBR">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/557708ac5f134.png" alt="Baskin Robbins">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/369f48a45f9f4.png" alt="IDL Construction">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/f11bcc4b6ad38.png" alt="런드로마트">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/73c85102eaefa.png" alt="LOTTERIA">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/2428d0a3fdd4b.png" alt="KYOCHON">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/ab5910e1793d9.png" alt="bb.q">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/7e1a498616045.png" alt="A TWOSOME PLACE">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/76c93805ef409.png" alt="TOUS les JOURS">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/82b5f60df8131.png" alt="평택시">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/d0fa8a7ce8d13.png" alt="삼정펄프지주">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/3ec7d168aaa87.png" alt="kyungshin">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/b4ef7fe0dd646.png" alt="PARIS BAGUETTE">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/9971f51d7acbf.png" alt="SAMSUNG">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/6531accbc03c9.png" alt="UD IMPACT">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/11f63ab0053a3.png" alt="KTAA">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/f23dbf2153ea5.png" alt="삼성">
+        </div>
+
+        <!-- 두 번째 세트 (무한 스크롤을 위한 복제) -->
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/4072e8fea61c5.png" alt="365mc">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/4377c8048f976.png" alt="IBR">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/557708ac5f134.png" alt="Baskin Robbins">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/369f48a45f9f4.png" alt="IDL Construction">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/f11bcc4b6ad38.png" alt="런드로마트">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/73c85102eaefa.png" alt="LOTTERIA">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/2428d0a3fdd4b.png" alt="KYOCHON">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/ab5910e1793d9.png" alt="bb.q">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/7e1a498616045.png" alt="A TWOSOME PLACE">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/76c93805ef409.png" alt="TOUS les JOURS">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/82b5f60df8131.png" alt="평택시">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/d0fa8a7ce8d13.png" alt="삼정펄프지주">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/3ec7d168aaa87.png" alt="kyungshin">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/b4ef7fe0dd646.png" alt="PARIS BAGUETTE">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/9971f51d7acbf.png" alt="SAMSUNG">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/6531accbc03c9.png" alt="UD IMPACT">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/11f63ab0053a3.png" alt="KTAA">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/f23dbf2153ea5.png" alt="삼성">
+        </div>
+
+        <!-- 세 번째 세트 (더 부드러운 무한 스크롤을 위한 추가 복제) -->
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/4072e8fea61c5.png" alt="365mc">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/4377c8048f976.png" alt="IBR">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/557708ac5f134.png" alt="Baskin Robbins">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/369f48a45f9f4.png" alt="IDL Construction">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/f11bcc4b6ad38.png" alt="런드로마트">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/73c85102eaefa.png" alt="LOTTERIA">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/2428d0a3fdd4b.png" alt="KYOCHON">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/ab5910e1793d9.png" alt="bb.q">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/7e1a498616045.png" alt="A TWOSOME PLACE">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/76c93805ef409.png" alt="TOUS les JOURS">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/82b5f60df8131.png" alt="평택시">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/d0fa8a7ce8d13.png" alt="삼정펄프지주">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/3ec7d168aaa87.png" alt="kyungshin">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/b4ef7fe0dd646.png" alt="PARIS BAGUETTE">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/9971f51d7acbf.png" alt="SAMSUNG">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/6531accbc03c9.png" alt="UD IMPACT">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/11f63ab0053a3.png" alt="KTAA">
+        </div>
+        <div class="onul-section05-logo-item">
+          <img src="https://cdn.imweb.me/upload/S202411166380e02dc267b/f23dbf2153ea5.png" alt="삼성">
+        </div>
+      </div>
+    </div>
+  </section>

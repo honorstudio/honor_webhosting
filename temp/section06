@@ -1,0 +1,333 @@
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .onul-section06 {
+      width: 100%;
+      height: 100vh;
+      max-width: 1920px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* 왼쪽 영역 - 그라데이션 배경 (정확히 50%) */
+    .onul-section06-left {
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(135deg, #002ca7 0%, #000000 100%);
+      position: relative;
+      padding-left: 7.4%;
+      padding-right: 5%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 8vh;
+      padding-bottom: 8vh;
+    }
+
+    .onul-section06-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .onul-section06-top {
+      flex: 0 0 auto;
+    }
+
+    .onul-section06-subtitle {
+      font-size: 1.042vw;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 5.4vh;
+    }
+
+    .onul-section06-title {
+      font-size: 5.73vw;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      margin-bottom: 4.44vh;
+    }
+
+    .onul-section06-features {
+      list-style: none;
+      margin-bottom: 8.15vh;
+    }
+
+    .onul-section06-features li {
+      font-size: 1.302vw;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.4;
+      margin-bottom: 1.5vh;
+    }
+
+    .onul-section06-features li::before {
+      content: "- ";
+    }
+
+    .onul-section06-bottom {
+      margin-top: auto;
+      padding-bottom: 0;
+    }
+
+    .onul-section06-divider {
+      width: 100%;
+      height: 1px;
+      background-color: #fff;
+      margin-bottom: 3.24vh;
+    }
+
+    .onul-section06-description {
+      font-size: 0.938vw;
+      line-height: 1.7;
+      font-weight: 400;
+      color: #fff;
+      text-align: left;
+    }
+
+    /* 오른쪽 영역 - 흰색 배경만 */
+    .onul-section06-right {
+      width: 50%;
+      height: 100%;
+      background-color: #fff;
+      position: relative;
+    }
+
+    /* 오브젝트 - 독립적으로 배치 */
+    .onul-section06-icon-wrapper {
+      position: absolute;
+      right: -10%;
+      bottom: -35%;
+      transform: translateY(-50%);
+      width: 65%;
+      max-width: none;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .onul-section06-icon {
+      width: 100%;
+      height: auto;
+    }
+
+    /* 태블릿 */
+    @media (max-width: 1440px) {
+      .onul-section06-left {
+        width: 70%;
+      }
+
+      .onul-section06-right {
+        width: 30%;
+      }
+
+      .onul-section06-icon-wrapper {
+        width: 50%;
+        bottom: -20%;
+      }
+
+      .onul-section06-subtitle {
+        font-size: 20px;
+      }
+
+      .onul-section06-title {
+        font-size: 90px;
+      }
+
+      .onul-section06-features li {
+        font-size: 22px;
+        line-height: 1.4;
+      }
+
+      .onul-section06-description {
+        font-size: 18px;
+        line-height: 1.7;
+        font-weight: 400;
+      }
+    }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      .onul-section06 {
+        flex-direction: column;
+        height: auto;
+      }
+
+      .onul-section06-left,
+      .onul-section06-right {
+        width: 100%;
+        height: auto;
+      }
+
+      .onul-section06-left {
+        padding: 60px 20px;
+      }
+
+      .onul-section06-top {
+        margin-bottom: 40px;
+      }
+
+      .onul-section06-subtitle {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+
+      .onul-section06-title {
+        font-size: 60px;
+        margin-bottom: 30px;
+      }
+
+      .onul-section06-features {
+        margin-bottom: 0;
+      }
+
+      .onul-section06-features li {
+        font-size: 18px;
+        line-height: 1.4;
+        margin-bottom: 10px;
+      }
+
+      .onul-section06-bottom {
+        margin-top: 40px;
+        padding-bottom: 0;
+      }
+
+      .onul-section06-divider {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      .onul-section06-description {
+        font-size: 15px;
+        line-height: 1.7;
+        font-weight: 400;
+      }
+
+      .onul-section06-right {
+        display: none;
+      }
+
+      .onul-section06-icon-wrapper {
+        display: none;
+      }
+    }
+
+    /* 작은 모바일 */
+    @media (max-width: 480px) {
+      .onul-section06-left {
+        padding: 40px 15px;
+      }
+
+      .onul-section06-subtitle {
+        font-size: 14px;
+      }
+
+      .onul-section06-title {
+        font-size: 48px;
+      }
+
+      .onul-section06-features li {
+        font-size: 16px;
+        line-height: 1.4;
+      }
+
+      .onul-section06-description {
+        font-size: 14px;
+        line-height: 1.7;
+        font-weight: 400;
+      }
+
+      .onul-section06-right {
+        display: none;
+      }
+    }
+
+    /* 큰 화면 대응 */
+    @media (min-width: 1920px) {
+      .onul-section06-subtitle {
+        font-size: 20px;
+      }
+
+      .onul-section06-title {
+        font-size: 110px;
+      }
+
+      .onul-section06-features li {
+        font-size: 25px;
+        line-height: 1.4;
+      }
+
+      .onul-section06-description {
+        font-size: 18px;
+        line-height: 1.7;
+        font-weight: 400;
+      }
+    }
+  </style>
+  <section class="onul-section06">
+    <!-- 왼쪽 영역 -->
+    <div class="onul-section06-left">
+      <div class="onul-section06-content">
+        <div class="onul-section06-top">
+          <div class="onul-section06-subtitle">오늘피플</div>
+          <div class="onul-section06-title">PEOPLE</div>
+
+          <ul class="onul-section06-features">
+            <li>전문 교육 후 인력 파견</li>
+            <li>현장 맞춤 청소 인력 파견 서비스</li>
+            <li>체계적 유지관리 서비스</li>
+          </ul>
+        </div>
+
+        <div class="onul-section06-bottom">
+          <div class="onul-section06-divider"></div>
+          <div class="onul-section06-description">
+            현장 맞춤 청소 인력 파견 서비스<br>
+            청소 전문 교육을 받은 인력이 직접 현장을 방문해 업무를 진행합니다.<br>
+            가정에는 가사도우미, 사업장에는 환경미화 인력이 투입되어 체계적인 청소를 <br>
+            제공합니다.<br><br>
+            시간제·단기 인력부터 정기 유지관리까지, 상황에 맞게 대응하며<br>
+            청소에 필요한 장비 또한 당사에서 세팅 후 파견합니다.<br>
+            전문성과 신뢰를 바탕으로, 깨끗하고 쾌적한 환경을 함께 만들어갑니다.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 오른쪽 영역 (흰색 배경만) -->
+    <div class="onul-section06-right"></div>
+
+    <!-- 오브젝트 (독립적으로 배치) -->
+    <div class="onul-section06-icon-wrapper">
+      <svg class="onul-section06-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1295.483 742.71">
+        <g id="group_18992261" transform="translate(0 0)">
+          <path id="패스_168" data-name="패스 168" d="M642.5,396.355H75.726A60.726,60.726,0,0,1,15,335.629C15,162.54,162.948,32,359.113,32S703.226,162.54,703.226,335.629A60.726,60.726,0,0,1,642.5,396.355ZM359.113,72.484c-173.089,0-303.629,113.132-303.629,263.145a20.242,20.242,0,0,0,20.242,20.242H642.5a20.242,20.242,0,0,0,20.242-20.242C662.742,185.616,532.2,72.484,359.113,72.484Z" transform="translate(288.629 346.355)" fill="#deebff"/>
+          <path id="패스_169" data-name="패스 169" d="M185.935,337.871A161.935,161.935,0,1,1,347.871,175.935,161.935,161.935,0,0,1,185.935,337.871Zm0-283.387A121.452,121.452,0,1,0,307.387,175.935,121.452,121.452,0,0,0,185.935,54.484Z" transform="translate(461.806 0)" fill="#deebff"/>
+          <path id="패스_170" data-name="패스 170" d="M368.875,357.873H166.456a20.242,20.242,0,1,1,0-40.484H368.875a20.242,20.242,0,0,0,20.242-20.242c0-147.766-88.538-222.661-263.145-222.661a512.423,512.423,0,0,0-58.4,3.178,20.245,20.245,0,1,1-4.656-40.221A552,552,0,0,1,125.972,34C324.606,34,429.6,124.989,429.6,297.147a60.726,60.726,0,0,1-60.726,60.726Z" transform="translate(865.883 384.837)" fill="#deebff"/>
+          <path id="패스_171" data-name="패스 171" d="M183.694,301.387A141.693,141.693,0,1,1,325.387,159.694,141.694,141.694,0,0,1,183.694,301.387Zm0-242.9A101.21,101.21,0,1,0,284.9,159.693a101.21,101.21,0,0,0-101.21-101.21Z" transform="translate(808.161 76.968)" fill="#deebff"/>
+          <path id="패스_172" data-name="패스 172" d="M263.145,357.873H60.726A60.726,60.726,0,0,1,0,297.147C0,124.989,104.995,34,303.629,34a551.968,551.968,0,0,1,63.054,3.441,20.245,20.245,0,1,1-4.656,40.221,512.406,512.406,0,0,0-58.4-3.178c-174.607,0-263.145,74.9-263.145,222.661a20.242,20.242,0,0,0,20.242,20.242H263.145a20.242,20.242,0,0,1,0,40.484Z" transform="translate(0 384.837)" fill="#deebff"/>
+          <path id="패스_173" data-name="패스 173" d="M149.693,301.387A141.693,141.693,0,1,1,291.387,159.694,141.693,141.693,0,0,1,149.693,301.387Zm0-242.9A101.21,101.21,0,1,0,250.9,159.693,101.21,101.21,0,0,0,149.693,58.484Z" transform="translate(153.935 76.968)" fill="#deebff"/>
+        </g>
+      </svg>
+    </div>
+  </section>

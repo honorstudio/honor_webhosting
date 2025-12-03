@@ -1,0 +1,559 @@
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .onul-section08 {
+      width: 100%;
+      max-width: 1920px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 80px 142px;
+      position: relative;
+    }
+
+    /* 헤더 영역 */
+    .onul-section08-header {
+      margin-bottom: 60px;
+    }
+
+    .onul-section08-subtitle {
+      font-size: 20px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 20px;
+    }
+
+    .onul-section08-title {
+      font-size: 110px;
+      font-weight: 700;
+      color: #000;
+      line-height: 1;
+    }
+
+    /* 라디오 버튼 숨기기 */
+    .onul-section08-tab-input {
+      display: none;
+    }
+
+    /* 왼쪽 탭 버튼 영역 */
+    .onul-section08-tabs {
+      float: left;
+      width: 256px;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .onul-section08-tab {
+      width: 256px;
+      height: 110px;
+      display: block;
+      text-align: center;
+      line-height: 110px;
+      font-size: 20px;
+      font-weight: 400;
+      color: #000;
+      background-color: #fff;
+      border: 1px solid #000;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin: 0 !important;
+      margin-top: -1px !important;
+      margin-bottom: 0 !important;
+    }
+
+    .onul-section08-tab:first-child {
+      margin-top: 0 !important;
+    }
+
+    .onul-section08-tab:hover {
+      background-color: #f5f5f5;
+    }
+
+    /* 체크된 탭 스타일 - 단순화된 선택자 */
+    #tab-cleaning:checked ~ .onul-section08-tabs label[for="tab-cleaning"],
+    #tab-realestate:checked ~ .onul-section08-tabs label[for="tab-realestate"],
+    #tab-facility:checked ~ .onul-section08-tabs label[for="tab-facility"] {
+      background-color: #000;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* 컨텐츠 영역 */
+    .onul-section08-contents {
+      overflow: hidden;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* 탭 컨텐츠 - 기본적으로 숨김 */
+    .onul-section08-content {
+      display: none;
+      position: relative;
+      width: 100%;
+      height: 328px;
+      margin: 0 !important;
+      padding: 0 !important;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 체크된 탭에 해당하는 컨텐츠만 표시 - 단순화된 선택자 */
+    #tab-cleaning:checked ~ .onul-section08-contents .onul-section08-content[data-content="cleaning"],
+    #tab-realestate:checked ~ .onul-section08-contents .onul-section08-content[data-content="realestate"],
+    #tab-facility:checked ~ .onul-section08-contents .onul-section08-content[data-content="facility"] {
+      display: flex;
+    }
+
+    /* 이미지 배경 영역 */
+    .onul-section08-image-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    .onul-section08-image-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 반투명 흰색 컨텐츠 박스 */
+    .onul-section08-content-box {
+      position: relative;
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 23px;
+      padding: 30px 40px;
+      margin: 0;
+      display: flex;
+      gap: 50px;
+      backdrop-filter: blur(10px);
+      width: calc(100% - 100px);
+      max-width: 1280px;
+    }
+
+    /* 설명 영역 */
+    .onul-section08-description {
+      flex: 1;
+      font-size: 20px;
+      line-height: 1.4;
+      color: #000;
+    }
+
+    /* 구분선 */
+    .onul-section08-divider {
+      width: 1px;
+      background-color: #ddd;
+      flex-shrink: 0;
+    }
+
+    /* 기대효과 영역 */
+    .onul-section08-effects {
+      flex-shrink: 0;
+      width: 220px;
+    }
+
+    .onul-section08-effects-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 20px;
+    }
+
+    .onul-section08-effects-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .onul-section08-effects-list li {
+      font-size: 20px;
+      font-weight: 600;
+      color: #000;
+      margin-bottom: 10px;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .onul-section08-effects-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+    }
+
+    /* 태블릿 */
+    @media (max-width: 1440px) {
+      .onul-section08 {
+        padding: 60px 80px;
+      }
+
+      .onul-section08-header {
+        margin-bottom: 40px;
+      }
+
+      .onul-section08-title {
+        font-size: 90px;
+      }
+
+      .onul-section08-tab {
+        width: 220px;
+        height: 100px;
+        font-size: 18px;
+      }
+
+      .onul-section08-content {
+        min-height: 298px;
+        height: auto;
+      }
+
+      .onul-section08-content-box {
+        padding: 20px 30px;
+        margin: 0;
+        gap: 30px;
+        width: calc(100% - 80px);
+      }
+
+      .onul-section08-description {
+        font-size: 16px;
+        line-height: 1.4;
+      }
+
+      .onul-section08-effects-title,
+      .onul-section08-effects-list li {
+        font-size: 16px;
+      }
+
+      .onul-section08-effects-list li {
+        margin-bottom: 8px;
+      }
+    }
+
+    /* 중간 사이즈 (태블릿과 모바일 사이) */
+    @media (max-width: 1024px) {
+      .onul-section08 {
+        padding: 60px 40px;
+      }
+
+      .onul-section08-title {
+        font-size: 70px;
+      }
+
+      .onul-section08-tabs {
+        width: 180px;
+      }
+
+      .onul-section08-tab {
+        width: 180px;
+        height: 100px;
+        font-size: 16px;
+      }
+
+      .onul-section08-content {
+        height: 298px;
+      }
+
+      .onul-section08-content-box {
+        padding: 20px 25px;
+        gap: 20px;
+        width: calc(100% - 60px);
+      }
+
+      .onul-section08-description {
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .onul-section08-effects {
+        width: 180px;
+      }
+
+      .onul-section08-effects-title,
+      .onul-section08-effects-list li {
+        font-size: 14px;
+      }
+
+      .onul-section08-effects-list li {
+        margin-bottom: 6px;
+      }
+    }
+
+    /* 작은 태블릿 - 세로 레이아웃으로 전환 */
+    @media (max-width: 900px) {
+      .onul-section08-tabs {
+        float: none;
+        display: flex;
+        width: 100%;
+        margin: 0 !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+      }
+
+      .onul-section08-tab {
+        flex: 1;
+        width: auto;
+        height: 70px;
+        line-height: 70px;
+        font-size: 16px;
+        margin: 0 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        margin-left: -1px !important;
+      }
+
+      .onul-section08-tab:first-child {
+        margin-left: 0 !important;
+      }
+
+      .onul-section08-contents {
+        overflow: visible;
+        width: 100%;
+        margin: 0 !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+        clear: both;
+      }
+
+      .onul-section08-content {
+        min-height: 350px;
+        width: 100%;
+      }
+
+      .onul-section08-content-box {
+        width: calc(100% - 60px);
+      }
+    }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      .onul-section08 {
+        padding: 40px 20px;
+      }
+
+      .onul-section08-header {
+        margin-bottom: 30px;
+      }
+
+      .onul-section08-subtitle {
+        font-size: 16px;
+      }
+
+      .onul-section08-title {
+        font-size: 60px;
+      }
+
+      .onul-section08-tabs {
+        display: flex;
+        width: 100%;
+        margin: 0 !important;
+        margin-bottom: 0 !important;
+        padding: 0 !important;
+      }
+
+      .onul-section08-tab {
+        flex: 1;
+        width: auto;
+        height: 60px;
+        line-height: 60px;
+        font-size: 16px;
+        margin: 0 !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        margin-left: -1px !important;
+      }
+
+      .onul-section08-tab:first-child {
+        margin-left: 0 !important;
+      }
+
+      .onul-section08-contents {
+        display: block;
+        width: 100%;
+        margin: 0 !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+        clear: both;
+      }
+
+      .onul-section08-content {
+        min-height: 400px;
+        height: auto;
+      }
+
+      .onul-section08-content-box {
+        flex-direction: column;
+        padding: 20px 18px;
+        margin: 0;
+        gap: 15px;
+        width: calc(100% - 60px);
+      }
+
+      .onul-section08-divider {
+        width: 100%;
+        height: 1px;
+      }
+
+      .onul-section08-description {
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .onul-section08-effects {
+        width: 100%;
+      }
+
+      .onul-section08-effects-title {
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      .onul-section08-effects-list li {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+    }
+
+    /* 작은 모바일 */
+    @media (max-width: 480px) {
+      .onul-section08-title {
+        font-size: 48px;
+      }
+
+      .onul-section08-tab {
+        font-size: 14px;
+        height: 50px;
+        line-height: 50px;
+        margin: 0 !important;
+        margin-left: -1px !important;
+      }
+
+      .onul-section08-content {
+        min-height: 350px;
+      }
+
+      .onul-section08-content-box {
+        padding: 18px 15px;
+        margin: 0;
+        gap: 12px;
+        width: calc(100% - 40px);
+      }
+
+      .onul-section08-description {
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .onul-section08-effects-title {
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+
+      .onul-section08-effects-list li {
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+    }
+  </style>
+  <section class="onul-section08">
+    <!-- 헤더 -->
+    <div class="onul-section08-header">
+      <div class="onul-section08-subtitle">오늘건물종합관리</div>
+      <div class="onul-section08-title">Building Care</div>
+    </div>
+
+    <!-- 라디오 버튼 (숨겨짐) -->
+    <input type="radio" name="section08-tab" id="tab-cleaning" class="onul-section08-tab-input" checked>
+    <input type="radio" name="section08-tab" id="tab-realestate" class="onul-section08-tab-input">
+    <input type="radio" name="section08-tab" id="tab-facility" class="onul-section08-tab-input">
+
+    <!-- 왼쪽 탭 네비게이션 -->
+    <div class="onul-section08-tabs">
+      <label for="tab-cleaning" class="onul-section08-tab">미화 관리</label>
+      <label for="tab-realestate" class="onul-section08-tab">부동산중개</label>
+      <label for="tab-facility" class="onul-section08-tab">시설관리</label>
+    </div>
+
+    <!-- 오른쪽 컨텐츠 영역 -->
+    <div class="onul-section08-contents">
+        <!-- 미화 관리 컨텐츠 -->
+        <div class="onul-section08-content" data-content="cleaning">
+          <div class="onul-section08-image-bg">
+            <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1400&q=80" alt="미화 관리">
+          </div>
+          <div class="onul-section08-content-box">
+            <div class="onul-section08-description">
+              쾌적한 환경유지를 위해 정기적인 서비스교육과 위생교육 및 모니터링을 실시하여 고품질의 서비스를 제공합니다.<br><br>
+              본사직원의 청소대행 서비스로 사무실, 복도, 계단, 화장실, 주차장 등을 깨끗하게 관리하세요.
+            </div>
+            <div class="onul-section08-divider"></div>
+            <div class="onul-section08-effects">
+              <div class="onul-section08-effects-title">[기대효과]</div>
+              <ul class="onul-section08-effects-list">
+                <li>건물 가치 상승</li>
+                <li>세입자 만족도 향상</li>
+                <li>공실률 최소화</li>
+                <li>관리 비용 절감</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 부동산중개 컨텐츠 -->
+        <div class="onul-section08-content" data-content="realestate">
+          <div class="onul-section08-image-bg">
+            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1400&q=80" alt="부동산중개">
+          </div>
+          <div class="onul-section08-content-box">
+            <div class="onul-section08-description">
+              전문적인 부동산 중개 서비스를 통해 최적의 매물을 찾아드립니다.<br><br>
+              시장 분석과 법률 검토를 통해 안전하고 투명한 거래를 지원하며, 고객의 자산 가치를 극대화합니다.
+            </div>
+            <div class="onul-section08-divider"></div>
+            <div class="onul-section08-effects">
+              <div class="onul-section08-effects-title">[기대효과]</div>
+              <ul class="onul-section08-effects-list">
+                <li>최적의 매물 발굴</li>
+                <li>안전한 거래 보장</li>
+                <li>시장 가치 분석</li>
+                <li>전문 컨설팅 제공</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- 시설관리 컨텐츠 -->
+        <div class="onul-section08-content" data-content="facility">
+          <div class="onul-section08-image-bg">
+            <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80" alt="시설관리">
+          </div>
+          <div class="onul-section08-content-box">
+            <div class="onul-section08-description">
+              건물의 모든 시설을 체계적으로 관리하여 안전하고 쾌적한 환경을 유지합니다.<br><br>
+              정기점검과 예방정비를 통해 시설의 수명을 연장하고, 갑작스러운 고장을 방지합니다.
+            </div>
+            <div class="onul-section08-divider"></div>
+            <div class="onul-section08-effects">
+              <div class="onul-section08-effects-title">[기대효과]</div>
+              <ul class="onul-section08-effects-list">
+                <li>시설 수명 연장</li>
+                <li>안전사고 예방</li>
+                <li>에너지 효율 향상</li>
+                <li>긴급 대응 체계</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+    </div><!-- .onul-section08-contents -->
+  </section>

@@ -1,0 +1,374 @@
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Apple SD Gothic Neo', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    .onul-section07 {
+      width: calc(100% - 80px);
+      max-width: 1920px;
+      margin: 40px auto;
+      background-color: #000;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      min-height: calc(100vh - 80px);
+      border-radius: 24px;
+    }
+
+    .onul-section07-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .onul-section07-content {
+      position: relative;
+      z-index: 1;
+      padding: 120px 60px;
+      min-height: calc(100vh - 80px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .onul-section07-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+
+    .onul-section07-header {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 100px;
+    }
+
+    .onul-section07-subtitle {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    .onul-section07-title {
+      font-size: 110px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1;
+      opacity: 0.523;
+      margin-bottom: 40px;
+    }
+
+    .onul-section07-description {
+      font-size: 20px;
+      line-height: 1.75;
+      color: #fff;
+    }
+
+    .onul-section07-buttons {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 70px;
+      margin-top: auto;
+      margin-bottom: 100px;
+    }
+
+    .level-button {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .level-circle {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: transform 0.25s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    /* 버튼 영역에 호버 시 애니메이션 */
+    .onul-section07-buttons:hover .basic-button .level-circle {
+      transform: scale(0.8);
+    }
+
+    .onul-section07-buttons:hover .advanced-button .level-circle {
+      transform: scale(1.4);
+    }
+
+    .basic-button .level-circle {
+      background-color: #fff;
+      color: #000;
+      padding: 40px;
+    }
+
+    .advanced-button .level-circle {
+      background-color: #000;
+      color: #fff;
+      padding: 50px;
+    }
+
+    .level-title {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .level-subtitle {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .level-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .level-option {
+      background-color: #fff;
+      color: #000;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 17px;
+      text-align: center;
+    }
+
+    .arrow {
+      font-size: 40px;
+      color: #fff;
+    }
+
+    /* 태블릿 */
+    @media (max-width: 1440px) {
+      .onul-section07 {
+        width: calc(100% - 60px);
+        margin: 30px auto;
+        min-height: calc(80vh - 60px);
+        border-radius: 20px;
+      }
+
+      .onul-section07-content {
+        padding: 80px 40px;
+      }
+
+      .onul-section07-title {
+        font-size: 90px;
+      }
+
+      .level-circle {
+        width: 250px;
+        height: 250px;
+      }
+
+      .basic-button .level-circle {
+        padding: 35px;
+      }
+
+      .advanced-button .level-circle {
+        padding: 40px;
+      }
+
+      .level-title {
+        font-size: 28px;
+      }
+
+      .onul-section07-buttons {
+        gap: 60px;
+      }
+    }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      .onul-section07 {
+        width: calc(100% - 40px);
+        margin: 20px auto;
+        min-height: auto;
+        border-radius: 16px;
+      }
+
+      .onul-section07-content {
+        padding: 60px 20px;
+        min-height: auto;
+      }
+
+      .onul-section07-subtitle {
+        font-size: 16px;
+      }
+
+      .onul-section07-title {
+        font-size: 60px;
+      }
+
+      .onul-section07-description {
+        font-size: 16px;
+      }
+
+      .onul-section07-header {
+        margin-bottom: 50px;
+      }
+
+      .onul-section07-buttons {
+        flex-direction: row;
+        gap: 20px;
+        align-items: center;
+        justify-content: center;
+        margin-top: 0;
+        margin-bottom: 40px;
+      }
+
+      .arrow {
+        display: none;
+      }
+
+      .level-circle {
+        width: 200px;
+        height: 200px;
+      }
+
+      .basic-button .level-circle {
+        padding: 20px;
+      }
+
+      .advanced-button .level-circle {
+        padding: 25px;
+      }
+
+      .level-title {
+        font-size: 20px;
+      }
+
+      .level-subtitle {
+        font-size: 12px;
+      }
+
+      .level-option {
+        font-size: 11px;
+        padding: 2px 10px;
+      }
+
+      .arrow {
+        font-size: 24px;
+      }
+    }
+
+    /* 작은 모바일 */
+    @media (max-width: 480px) {
+      .onul-section07 {
+        width: calc(100% - 30px);
+        margin: 15px auto;
+        min-height: auto;
+        border-radius: 12px;
+      }
+
+      .onul-section07-content {
+        padding: 40px 15px;
+        min-height: auto;
+      }
+
+      .onul-section07-title {
+        font-size: 48px;
+      }
+
+      .onul-section07-header {
+        margin-bottom: 40px;
+      }
+
+      .onul-section07-buttons {
+        gap: 15px;
+        margin-top: 0;
+        margin-bottom: 30px;
+      }
+
+      .level-circle {
+        width: 180px;
+        height: 180px;
+      }
+
+      .basic-button .level-circle {
+        padding: 18px;
+      }
+
+      .advanced-button .level-circle {
+        padding: 20px;
+      }
+
+      .level-title {
+        font-size: 18px;
+      }
+
+      .level-subtitle {
+        font-size: 10px;
+      }
+
+      .level-option {
+        font-size: 10px;
+        padding: 3px 8px;
+      }
+
+      .arrow {
+        display:none;
+      }
+    }
+  </style>
+  <section class="onul-section07">
+    <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1920&q=80" alt="교육 배경" class="onul-section07-bg">
+    <div class="onul-section07-overlay"></div>
+
+    <div class="onul-section07-content">
+      <div class="onul-section07-header">
+        <div class="onul-section07-subtitle">오늘교육</div>
+        <div class="onul-section07-title">Education</div>
+        <div class="onul-section07-description">
+          탄탄한 기본기를 바탕으로 한 단계 깊은 심화 과정을 통해 실무에 필요한 전문성을 키울 수 있습니다.<br>
+          가정, 상업, 냉난방기 등 상황에 맞는 과정을 선택해 자신에게 꼭 맞는 학습을 이어갈 수 있습니다.<br>
+          이론과 실습을 균형 있게 구성해 배운 내용을 곧바로 현장에 적용할 수 있도록 설계했습니다.
+        </div>
+      </div>
+
+      <div class="onul-section07-buttons">
+        <div class="level-button basic-button">
+          <div class="level-circle">
+            <div class="level-title">기본기</div>
+          </div>
+        </div>
+
+        <div class="arrow">→</div>
+
+        <div class="level-button advanced-button">
+          <div class="level-circle">
+            <div class="level-title">심화</div>
+            <div class="level-subtitle">선택가능</div>
+            <div class="level-options">
+              <div class="level-option">가정</div>
+              <div class="level-option">상업</div>
+              <div class="level-option">냉난방기</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
