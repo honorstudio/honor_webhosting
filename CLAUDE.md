@@ -19,9 +19,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **프레임워크**: Next.js 16 (App Router, TypeScript)
 - **스타일링**: Tailwind CSS 4
-- **배포**: Vercel
+- **배포**: Vercel (프로젝트: `honor_webhosting`)
 - **백엔드/DB/인증**: Supabase (프로젝트 ID: szibgustboctptotffbr)
 - **테스트**: Playwright (MCP 도구 사용)
+
+## Vercel 배포 정보
+
+| 항목 | 값 |
+|------|-----|
+| 프로젝트명 | `honor_webhosting` |
+| 팀 | honorstudios-projects |
+| GitHub 연동 | https://github.com/honorstudio/honor_webhosting |
+| 배포 방식 | Git push 시 자동 배포 |
+
+**연결된 도메인:**
+- `onul.day` - 오늘 기업 웹사이트
+- `www.onul.day` - 오늘 기업 웹사이트 (www)
+- `app.onul.day` - 오늘 앱 (Expo)
 
 ## 프로젝트 구조
 
