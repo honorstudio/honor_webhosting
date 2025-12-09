@@ -3,8 +3,11 @@ import { type NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
 // 특별 도메인 매핑 (DB 조회 없이 직접 매핑)
-const SPECIAL_DOMAINS: Record<string, { slug: string; defaultPath?: string }> = {
-  'app.onul.day': { slug: 'onul', defaultPath: '/index' },
+// app.onul.day 라우팅:
+//   - /index → 랜딩 페이지 (마케팅/홍보)
+//   - / 및 나머지 → Expo 앱 (static HTML)
+const SPECIAL_DOMAINS: Record<string, { slug: string; isExpoApp?: boolean }> = {
+  'app.onul.day': { slug: 'onul', isExpoApp: true },
   // 추가 특별 도메인이 필요하면 여기에 추가
 }
 
@@ -35,10 +38,26 @@ async function handleCustomDomain(request: NextRequest): Promise<NextResponse | 
       return null
     }
 
-    // 루트 경로는 지정된 기본 경로로 리다이렉트
-    if (pathname === '/' && specialDomain.defaultPath) {
-      url.pathname = `/sites/${specialDomain.slug}${specialDomain.defaultPath}`
+    // /index 경로는 랜딩 페이지로
+    if (pathname === '/index') {
+      url.pathname = `/sites/${specialDomain.slug}/index`
       return NextResponse.rewrite(url)
+    }
+
+    // Expo 앱 도메인인 경우: 루트 및 기타 경로는 static HTML로
+    if (specialDomain.isExpoApp) {
+      // 루트 경로는 Expo 앱 HTML로
+      if (pathname === '/') {
+        url.pathname = '/onul-app.html'
+        return NextResponse.rewrite(url)
+      }
+      // Expo 앱 내부 라우팅도 같은 HTML로 (SPA)
+      // 단, 정적 파일 경로는 제외
+      if (!pathname.startsWith('/_expo') && !pathname.startsWith('/onul-')) {
+        url.pathname = '/onul-app.html'
+        return NextResponse.rewrite(url)
+      }
+      return null
     }
 
     // 다른 경로는 사이트 하위로 리라이트
@@ -112,6 +131,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     // 정적 파일과 API 라우트를 제외한 모든 경로
-    '/((?!_next/static|_next/image|favicon.ico|api/|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    // _expo 경로도 제외 (Expo 앱 정적 파일)
+    '/((?!_next/static|_next/image|_expo/|favicon.ico|api/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|html|ico|css|js)$).*)',
   ],
 }
