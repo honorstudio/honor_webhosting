@@ -2,6 +2,12 @@ import { updateSession } from '@/lib/supabase/middleware'
 import { type NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
+// 특별 도메인 매핑 (DB 조회 없이 직접 매핑)
+const SPECIAL_DOMAINS: Record<string, { slug: string; defaultPath?: string }> = {
+  'app.onul.day': { slug: 'onul', defaultPath: '/index' },
+  // 추가 특별 도메인이 필요하면 여기에 추가
+}
+
 // 커스텀 도메인 라우팅 처리
 async function handleCustomDomain(request: NextRequest): Promise<NextResponse | null> {
   const hostname = request.headers.get('host') || ''
@@ -17,6 +23,28 @@ async function handleCustomDomain(request: NextRequest): Promise<NextResponse | 
 
   // www 제거
   const domain = hostname.replace(/^www\./, '')
+
+  // 특별 도메인 처리 (DB 조회 없이 직접 처리)
+  const specialDomain = SPECIAL_DOMAINS[domain]
+  if (specialDomain) {
+    const url = request.nextUrl.clone()
+    const pathname = url.pathname
+
+    // 이미 /sites/[slug] 경로면 그대로 진행
+    if (pathname.startsWith(`/sites/${specialDomain.slug}`)) {
+      return null
+    }
+
+    // 루트 경로는 지정된 기본 경로로 리다이렉트
+    if (pathname === '/' && specialDomain.defaultPath) {
+      url.pathname = `/sites/${specialDomain.slug}${specialDomain.defaultPath}`
+      return NextResponse.rewrite(url)
+    }
+
+    // 다른 경로는 사이트 하위로 리라이트
+    url.pathname = `/sites/${specialDomain.slug}${pathname}`
+    return NextResponse.rewrite(url)
+  }
 
   // Supabase에서 해당 도메인의 사이트 조회
   const supabase = createServerClient(

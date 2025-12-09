@@ -15,6 +15,7 @@ import dynamic from 'next/dynamic';
 const VERSION_COMPONENTS = {
   v1: dynamic(() => import('./versions/v1'), { ssr: true }),
   v2: dynamic(() => import('./versions/v2'), { ssr: true }),
+  hygiene: dynamic(() => import('./versions/hygiene'), { ssr: true }),
   // v3: dynamic(() => import('./versions/v3'), { ssr: true }),
 };
 
