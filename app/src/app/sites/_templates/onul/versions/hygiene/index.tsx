@@ -900,7 +900,7 @@ export default function OnulHygieneTemplate() {
             {/* 문구 카드 */}
             <div className="space-y-4">
               <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                <div className="text-2xl mb-4">&quot;위생은 비용이 아니라,</div>
+                <div className="text-2xl mb-4 text-white">&quot;위생은 비용이 아니라,</div>
                 <div className="text-2xl font-bold" style={{ color: BRAND_COLOR }}>브랜드의 품격입니다.&quot;</div>
               </div>
 
