@@ -36,6 +36,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `onul.day` - 오늘 기업 웹사이트
 - `www.onul.day` - 오늘 기업 웹사이트 (www)
 - `app.onul.day` - 오늘 앱 (Expo)
+- `onulmediclean.com` - 오늘 위생산업 랜딩 페이지 (가비아 DNS)
 
 ## 프로젝트 구조
 
@@ -61,8 +62,10 @@ honor_webhosting/
 | 도메인 | 용도 | 라우팅 |
 |--------|------|--------|
 | `onul.day` | 오늘 기업 웹사이트 | `/sites/onul` |
-| `app.onul.day` | 오늘 앱 (Expo) | `/sites/onul/app` |
+| `app.onul.day` | 오늘 앱 (Expo) | `/onul-app.html` |
 | `app.onul.day/index` | 앱 홍보 랜딩 페이지 | `/sites/onul/index` |
+| `onulmediclean.com` | 오늘 위생산업 랜딩 페이지 | `/sites/onul/index` |
+| `onulmediclean.com/app` | 오늘 앱 (Expo) | `/onul-app.html` |
 
 ## 아키텍처
 
@@ -70,10 +73,12 @@ honor_webhosting/
 ┌─────────────────────────────────────────┐
 │           Vercel (하나의 앱)              │
 ├─────────────────────────────────────────┤
-│  onul.day      ──→ 기업 웹사이트         │
-│  app.onul.day  ──→ Expo 앱              │
-│  app.onul.day/index ──→ 랜딩 페이지      │
-│  clientX.com   ──→ 다른 클라이언트 사이트  │
+│  onul.day          ──→ 기업 웹사이트      │
+│  app.onul.day      ──→ Expo 앱          │
+│  app.onul.day/index ──→ 랜딩 페이지       │
+│  onulmediclean.com ──→ 위생산업 랜딩      │
+│  onulmediclean.com/app ──→ Expo 앱      │
+│  clientX.com       ──→ 다른 클라이언트    │
 └─────────────────────────────────────────┘
                     │
                     ▼

@@ -6,9 +6,12 @@ import { createServerClient } from '@supabase/ssr'
 // app.onul.day 라우팅:
 //   - /index → 랜딩 페이지 (마케팅/홍보)
 //   - / 및 나머지 → Expo 앱 (static HTML)
-const SPECIAL_DOMAINS: Record<string, { slug: string; isExpoApp?: boolean }> = {
+// onulmediclean.com 라우팅:
+//   - / → 랜딩 페이지 (오늘 위생산업)
+//   - /app → Expo 앱
+const SPECIAL_DOMAINS: Record<string, { slug: string; isExpoApp?: boolean; landingFirst?: boolean }> = {
   'app.onul.day': { slug: 'onul', isExpoApp: true },
-  // 추가 특별 도메인이 필요하면 여기에 추가
+  'onulmediclean.com': { slug: 'onul', landingFirst: true },
 }
 
 // 커스텀 도메인 라우팅 처리
@@ -41,6 +44,23 @@ async function handleCustomDomain(request: NextRequest): Promise<NextResponse | 
     // /index 경로는 랜딩 페이지로
     if (pathname === '/index') {
       url.pathname = `/sites/${specialDomain.slug}/index`
+      return NextResponse.rewrite(url)
+    }
+
+    // landingFirst 도메인: 루트는 랜딩 페이지, /app은 Expo 앱
+    if (specialDomain.landingFirst) {
+      // 루트 경로는 랜딩 페이지로 (hygiene 버전)
+      if (pathname === '/') {
+        url.pathname = `/sites/${specialDomain.slug}/index`
+        return NextResponse.rewrite(url)
+      }
+      // /app 경로는 Expo 앱으로
+      if (pathname === '/app' || pathname.startsWith('/app/')) {
+        url.pathname = '/onul-app.html'
+        return NextResponse.rewrite(url)
+      }
+      // 다른 경로는 사이트 하위로 리라이트
+      url.pathname = `/sites/${specialDomain.slug}${pathname}`
       return NextResponse.rewrite(url)
     }
 
