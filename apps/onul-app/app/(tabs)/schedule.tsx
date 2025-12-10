@@ -392,28 +392,28 @@ export default function ScheduleScreen() {
         <View className="h-8" />
       </ScrollView>
 
-      {/* 수거 신청 드로어 */}
+      {/* 수거 신청 바텀 드로어 */}
       <Modal
         visible={showRequestModal}
         transparent
-        animationType="fade"
+        animationType="none"
         onRequestClose={() => setShowRequestModal(false)}
       >
-        {/* 배경 오버레이 - 별도 분리 */}
+        {/* 배경 오버레이 - 별도 분리 (터치 시 닫힘) */}
         <Pressable
           className="absolute inset-0 bg-black/40"
           onPress={() => setShowRequestModal(false)}
         />
 
-        {/* 드로어 컨텐츠 - 중앙~상단 위치 */}
-        <View className="flex-1 justify-center px-4 py-20">
-          <View className="bg-white rounded-2xl overflow-hidden shadow-xl">
+        {/* 바텀 드로어 - 하단에서 위로 */}
+        <View className="flex-1 justify-end">
+          <View className="bg-white rounded-t-3xl">
             {/* 드로어 핸들 */}
             <View className="items-center pt-3 pb-2">
               <View className="w-10 h-1 bg-gray-300 rounded-full" />
             </View>
 
-            <View className="px-5 pb-6">
+            <View className="px-5 pb-8">
               {/* 헤더 */}
               <View className="flex-row items-center justify-between mb-5">
                 <Text className="text-lg font-bold text-foreground">수거 신청</Text>

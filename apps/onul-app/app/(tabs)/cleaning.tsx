@@ -334,22 +334,22 @@ export default function CleaningScreen() {
         <View className="h-8" />
       </ScrollView>
 
-      {/* 서비스 신청 드로어 */}
+      {/* 서비스 신청 바텀 드로어 */}
       <Modal
         visible={showRequestModal}
         transparent
-        animationType="fade"
+        animationType="none"
         onRequestClose={() => setShowRequestModal(false)}
       >
-        {/* 배경 오버레이 - 별도 분리 */}
+        {/* 배경 오버레이 - 별도 분리 (터치 시 닫힘) */}
         <Pressable
           className="absolute inset-0 bg-black/40"
           onPress={() => setShowRequestModal(false)}
         />
 
-        {/* 드로어 컨텐츠 - 중앙 위치 */}
-        <View className="flex-1 justify-center px-4 py-10">
-          <View className="bg-white rounded-2xl overflow-hidden shadow-xl max-h-[85%]">
+        {/* 바텀 드로어 - 하단에서 위로 */}
+        <View className="flex-1 justify-end">
+          <View className="bg-white rounded-t-3xl max-h-[85%]">
             {/* 드로어 핸들 */}
             <View className="items-center pt-3 pb-2">
               <View className="w-10 h-1 bg-gray-300 rounded-full" />
@@ -367,7 +367,7 @@ export default function CleaningScreen() {
                 </Pressable>
               </View>
 
-              <ScrollView showsVerticalScrollIndicator={false} className="max-h-[400px]">
+              <ScrollView showsVerticalScrollIndicator={false} className="max-h-[350px]">
                 {selectedService && (
                   <>
                     {/* 선택된 서비스 정보 */}
@@ -433,7 +433,7 @@ export default function CleaningScreen() {
             </View>
 
             {/* 버튼 */}
-            <View className="flex-row gap-3 px-5 pb-6 pt-4 border-t border-gray-100">
+            <View className="flex-row gap-3 px-5 pb-8 pt-4 border-t border-gray-100">
               <Pressable
                 className="flex-1 py-4 bg-gray-100 rounded-xl items-center active:bg-gray-200"
                 onPress={() => setShowRequestModal(false)}
