@@ -7,14 +7,24 @@ import {
   Store,
   MessageCircle,
   Menu,
+  CalendarCheck,
+  User,
+  Sparkles,
 } from "lucide-react-native";
 import DrawerMenu from "../../src/components/DrawerMenu";
 import Sidebar from "../../src/components/Sidebar";
 import { useResponsive } from "../../src/hooks/useResponsive";
+import { useAuth } from "../../src/contexts/AuthContext";
+import { useDevView } from "../../src/contexts/DevViewContext";
 
 export default function TabLayout() {
   const [drawerVisible, setDrawerVisible] = useState(false);
-  const { showSidebar, contentMaxWidth } = useResponsive();
+  const { showSidebar } = useResponsive();
+  const { profile } = useAuth();
+  const { getEffectiveRole } = useDevView();
+
+  const effectiveRole = getEffectiveRole(profile?.role);
+  const isClient = effectiveRole === "client";
 
   // PC/태블릿: 사이드바 레이아웃
   if (showSidebar) {
@@ -42,30 +52,58 @@ export default function TabLayout() {
                 },
               }}
             >
+              {/* 마스터/관리자: 대시보드, 클라이언트: 숨김 */}
               <Tabs.Screen
                 name="index"
                 options={{
                   title: "대시보드",
+                  href: isClient ? null : "/(tabs)/index",
                   tabBarIcon: ({ color, size }) => (
                     <LayoutDashboard size={size} color={color} />
                   ),
                 }}
               />
+              {/* 마스터/관리자: 프로젝트 */}
               <Tabs.Screen
                 name="projects"
                 options={{
                   title: "프로젝트",
+                  href: isClient ? null : "/(tabs)/projects",
                   tabBarIcon: ({ color, size }) => (
                     <FolderKanban size={size} color={color} />
                   ),
                 }}
               />
+              {/* 마스터/관리자: 매장관리 */}
               <Tabs.Screen
                 name="stores"
                 options={{
                   title: "매장관리",
+                  href: isClient ? null : "/(tabs)/stores",
                   tabBarIcon: ({ color, size }) => (
                     <Store size={size} color={color} />
+                  ),
+                }}
+              />
+              {/* 클라이언트: 정기관리 (첫번째 탭) */}
+              <Tabs.Screen
+                name="schedule"
+                options={{
+                  title: "정기관리",
+                  href: isClient ? "/(tabs)/schedule" : null,
+                  tabBarIcon: ({ color, size }) => (
+                    <CalendarCheck size={size} color={color} />
+                  ),
+                }}
+              />
+              {/* 클라이언트: 매장관리 (단기 1회성 청소) */}
+              <Tabs.Screen
+                name="cleaning"
+                options={{
+                  title: "매장관리",
+                  href: isClient ? "/(tabs)/cleaning" : null,
+                  tabBarIcon: ({ color, size }) => (
+                    <Sparkles size={size} color={color} />
                   ),
                 }}
               />
@@ -73,9 +111,20 @@ export default function TabLayout() {
                 name="chat"
                 options={{
                   title: "채팅",
-                  headerShown: false, // PC에서는 자체 헤더 사용
+                  headerShown: false,
                   tabBarIcon: ({ color, size }) => (
                     <MessageCircle size={size} color={color} />
+                  ),
+                }}
+              />
+              {/* 클라이언트: 내 정보 */}
+              <Tabs.Screen
+                name="myinfo"
+                options={{
+                  title: "내 정보",
+                  href: isClient ? "/(tabs)/myinfo" : null,
+                  tabBarIcon: ({ color, size }) => (
+                    <User size={size} color={color} />
                   ),
                 }}
               />
@@ -127,29 +176,57 @@ export default function TabLayout() {
           },
         }}
       >
+        {/* 마스터/관리자: 대시보드, 클라이언트: 숨김 */}
         <Tabs.Screen
           name="index"
           options={{
             title: "대시보드",
+            href: isClient ? null : "/(tabs)/index",
             tabBarIcon: ({ color, size }) => (
               <LayoutDashboard size={size} color={color} />
             ),
           }}
         />
+        {/* 마스터/관리자: 프로젝트 */}
         <Tabs.Screen
           name="projects"
           options={{
             title: "프로젝트",
+            href: isClient ? null : "/(tabs)/projects",
             tabBarIcon: ({ color, size }) => (
               <FolderKanban size={size} color={color} />
             ),
           }}
         />
+        {/* 마스터/관리자: 매장관리 */}
         <Tabs.Screen
           name="stores"
           options={{
             title: "매장관리",
+            href: isClient ? null : "/(tabs)/stores",
             tabBarIcon: ({ color, size }) => <Store size={size} color={color} />,
+          }}
+        />
+        {/* 클라이언트: 정기관리 (첫번째 탭) */}
+        <Tabs.Screen
+          name="schedule"
+          options={{
+            title: "정기관리",
+            href: isClient ? "/(tabs)/schedule" : null,
+            tabBarIcon: ({ color, size }) => (
+              <CalendarCheck size={size} color={color} />
+            ),
+          }}
+        />
+        {/* 클라이언트: 매장관리 (단기 1회성 청소) */}
+        <Tabs.Screen
+          name="cleaning"
+          options={{
+            title: "매장관리",
+            href: isClient ? "/(tabs)/cleaning" : null,
+            tabBarIcon: ({ color, size }) => (
+              <Sparkles size={size} color={color} />
+            ),
           }}
         />
         <Tabs.Screen
@@ -158,6 +235,17 @@ export default function TabLayout() {
             title: "채팅",
             tabBarIcon: ({ color, size }) => (
               <MessageCircle size={size} color={color} />
+            ),
+          }}
+        />
+        {/* 클라이언트: 내 정보 */}
+        <Tabs.Screen
+          name="myinfo"
+          options={{
+            title: "내 정보",
+            href: isClient ? "/(tabs)/myinfo" : null,
+            tabBarIcon: ({ color, size }) => (
+              <User size={size} color={color} />
             ),
           }}
         />
