@@ -334,96 +334,115 @@ export default function CleaningScreen() {
         <View className="h-8" />
       </ScrollView>
 
-      {/* 서비스 신청 모달 */}
+      {/* 서비스 신청 드로어 */}
       <Modal
         visible={showRequestModal}
         transparent
-        animationType="slide"
+        animationType="fade"
         onRequestClose={() => setShowRequestModal(false)}
       >
-        <View className="flex-1 justify-end bg-black/50">
-          <View className="bg-white rounded-t-3xl p-6 max-h-[80%]">
-            <View className="flex-row items-center justify-between mb-4">
-              <Text className="text-lg font-bold text-foreground">서비스 신청</Text>
-              <Pressable onPress={() => setShowRequestModal(false)}>
-                <X size={24} color="#6B7280" />
-              </Pressable>
+        {/* 배경 오버레이 - 별도 분리 */}
+        <Pressable
+          className="absolute inset-0 bg-black/40"
+          onPress={() => setShowRequestModal(false)}
+        />
+
+        {/* 드로어 컨텐츠 - 중앙 위치 */}
+        <View className="flex-1 justify-center px-4 py-10">
+          <View className="bg-white rounded-2xl overflow-hidden shadow-xl max-h-[85%]">
+            {/* 드로어 핸들 */}
+            <View className="items-center pt-3 pb-2">
+              <View className="w-10 h-1 bg-gray-300 rounded-full" />
             </View>
 
-            <ScrollView showsVerticalScrollIndicator={false}>
-              {selectedService && (
-                <>
-                  {/* 선택된 서비스 정보 */}
-                  <View className="bg-surface rounded-xl p-4 mb-4">
-                    <Text className="text-foreground font-bold text-base">
-                      {selectedService.name}
-                    </Text>
-                    <Text className="text-muted text-sm mt-1">
-                      {selectedService.description}
-                    </Text>
-                    <View className="flex-row items-center mt-2">
-                      <Clock size={14} color="#6B7280" />
-                      <Text className="text-muted text-sm ml-1">
-                        예상 소요시간: {selectedService.duration}
+            <View className="px-5">
+              {/* 헤더 */}
+              <View className="flex-row items-center justify-between mb-4">
+                <Text className="text-lg font-bold text-foreground">서비스 신청</Text>
+                <Pressable
+                  onPress={() => setShowRequestModal(false)}
+                  className="w-8 h-8 rounded-full bg-gray-100 items-center justify-center"
+                >
+                  <X size={18} color="#6B7280" />
+                </Pressable>
+              </View>
+
+              <ScrollView showsVerticalScrollIndicator={false} className="max-h-[400px]">
+                {selectedService && (
+                  <>
+                    {/* 선택된 서비스 정보 */}
+                    <View className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-4">
+                      <Text className="text-foreground font-bold text-base">
+                        {selectedService.name}
+                      </Text>
+                      <Text className="text-muted text-sm mt-1">
+                        {selectedService.description}
+                      </Text>
+                      <View className="flex-row items-center mt-2">
+                        <Clock size={14} color="#6B7280" />
+                        <Text className="text-muted text-sm ml-1">
+                          예상 소요시간: {selectedService.duration}
+                        </Text>
+                      </View>
+                      <Text className="text-primary font-bold text-lg mt-2">
+                        {formatPrice(selectedService.price)}~
                       </Text>
                     </View>
-                    <Text className="text-primary font-bold text-lg mt-2">
-                      {formatPrice(selectedService.price)}~
-                    </Text>
-                  </View>
 
-                  {/* 희망 날짜 */}
-                  <View className="mb-4">
-                    <Text className="text-sm font-medium text-foreground mb-2">
-                      희망 날짜 *
-                    </Text>
-                    <TextInput
-                      className="bg-surface border border-border rounded-xl px-4 py-3 text-foreground"
-                      placeholder="예: 2025-01-15"
-                      placeholderTextColor="#9CA3AF"
-                      value={requestDate}
-                      onChangeText={setRequestDate}
-                    />
-                  </View>
+                    {/* 희망 날짜 */}
+                    <View className="mb-4">
+                      <Text className="text-sm font-medium text-foreground mb-2">
+                        희망 날짜 *
+                      </Text>
+                      <TextInput
+                        className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-foreground"
+                        placeholder="예: 2025-01-15"
+                        placeholderTextColor="#9CA3AF"
+                        value={requestDate}
+                        onChangeText={setRequestDate}
+                      />
+                    </View>
 
-                  {/* 요청 사항 */}
-                  <View className="mb-4">
-                    <Text className="text-sm font-medium text-foreground mb-2">
-                      요청 사항 (선택)
-                    </Text>
-                    <TextInput
-                      className="bg-surface border border-border rounded-xl px-4 py-3 text-foreground"
-                      placeholder="추가 요청 사항이 있으면 입력해주세요"
-                      placeholderTextColor="#9CA3AF"
-                      value={requestNote}
-                      onChangeText={setRequestNote}
-                      multiline
-                      numberOfLines={3}
-                      textAlignVertical="top"
-                    />
-                  </View>
+                    {/* 요청 사항 */}
+                    <View className="mb-4">
+                      <Text className="text-sm font-medium text-foreground mb-2">
+                        요청 사항 (선택)
+                      </Text>
+                      <TextInput
+                        className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-foreground min-h-[80px]"
+                        placeholder="추가 요청 사항이 있으면 입력해주세요"
+                        placeholderTextColor="#9CA3AF"
+                        value={requestNote}
+                        onChangeText={setRequestNote}
+                        multiline
+                        numberOfLines={3}
+                        textAlignVertical="top"
+                      />
+                    </View>
 
-                  {/* 안내 문구 */}
-                  <View className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4">
-                    <Text className="text-amber-700 text-sm">
-                      신청 후 담당자가 확인하여 연락드립니다.{"\n"}
-                      최종 가격은 현장 확인 후 결정될 수 있습니다.
-                    </Text>
-                  </View>
-                </>
-              )}
-            </ScrollView>
+                    {/* 안내 문구 */}
+                    <View className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4">
+                      <Text className="text-amber-700 text-sm">
+                        신청 후 담당자가 확인하여 연락드립니다.{"\n"}
+                        최종 가격은 현장 확인 후 결정될 수 있습니다.
+                      </Text>
+                    </View>
+                  </>
+                )}
+              </ScrollView>
+            </View>
 
-            <View className="flex-row gap-3 pt-4 border-t border-border">
+            {/* 버튼 */}
+            <View className="flex-row gap-3 px-5 pb-6 pt-4 border-t border-gray-100">
               <Pressable
-                className="flex-1 py-4 bg-surface rounded-xl items-center"
+                className="flex-1 py-4 bg-gray-100 rounded-xl items-center active:bg-gray-200"
                 onPress={() => setShowRequestModal(false)}
               >
                 <Text className="text-foreground font-medium">취소</Text>
               </Pressable>
               <Pressable
                 className={`flex-1 py-4 rounded-xl items-center ${
-                  !requestDate || submitting ? "bg-primary/50" : "bg-primary"
+                  !requestDate || submitting ? "bg-primary/50" : "bg-primary active:bg-primary/90"
                 }`}
                 onPress={handleSubmitRequest}
                 disabled={!requestDate || submitting}

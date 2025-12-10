@@ -136,7 +136,7 @@ export default function OnulHygieneTemplate() {
                 </a>
               ))}
               <a
-                href="https://app.onul.day"
+                href="/app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-5 py-2 text-white text-sm rounded-full font-medium hover:opacity-90 transition-all"
@@ -179,7 +179,7 @@ export default function OnulHygieneTemplate() {
                 </a>
               ))}
               <a
-                href="https://app.onul.day"
+                href="/app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block py-3 px-4 mt-2 text-white font-medium rounded-xl text-center transition-all"
@@ -272,7 +272,7 @@ export default function OnulHygieneTemplate() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://app.onul.day"
+              href="/app"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white rounded-full font-medium transition-all hover:scale-105"
@@ -741,7 +741,7 @@ export default function OnulHygieneTemplate() {
               </div>
 
               <a
-                href="https://app.onul.day"
+                href="/app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 text-white rounded-full font-medium transition-all hover:scale-105 mt-8"
@@ -869,7 +869,7 @@ export default function OnulHygieneTemplate() {
               </div>
 
               <a
-                href="https://app.onul.day"
+                href="/app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-4 text-white rounded-full font-medium transition-all hover:scale-105"

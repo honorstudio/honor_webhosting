@@ -13,10 +13,8 @@ import { useRouter } from "expo-router";
 import {
   Trash2,
   Sparkles,
-  CheckCircle2,
   X,
   Calendar as CalendarIcon,
-  Package,
 } from "lucide-react-native";
 import { useAuth } from "../../src/contexts/AuthContext";
 import { supabase } from "../../src/lib/supabase";
@@ -182,28 +180,23 @@ export default function ScheduleScreen() {
     };
   }
 
-  // 남은 수거 아이콘 렌더링
-  const renderRemainingIcons = (count: number, total: number, type: "pickup" | "cleaning") => {
+  // 남은 수거/청소 심플 아이콘 렌더링 (○○○ 스타일)
+  const renderSimpleIcons = (remaining: number, total: number, type: "pickup" | "cleaning") => {
     const icons = [];
-    const Icon = type === "pickup" ? Package : Sparkles;
     const activeColor = type === "pickup" ? "#67c0a1" : "#3B82F6";
 
     for (let i = 0; i < total; i++) {
-      const isUsed = i >= count;
+      const isRemaining = i < remaining;
       icons.push(
         <View
           key={i}
-          className={`w-12 h-12 rounded-xl items-center justify-center mr-2 ${
-            isUsed ? "bg-gray-100" : type === "pickup" ? "bg-primary/10" : "bg-blue-100"
+          className={`w-6 h-6 rounded-full mr-1 ${
+            isRemaining
+              ? ""
+              : "bg-gray-200"
           }`}
-        >
-          <Icon size={24} color={isUsed ? "#D1D5DB" : activeColor} />
-          {isUsed && (
-            <View className="absolute">
-              <CheckCircle2 size={16} color="#9CA3AF" />
-            </View>
-          )}
-        </View>
+          style={isRemaining ? { backgroundColor: activeColor } : {}}
+        />
       );
     }
     return icons;
@@ -248,40 +241,38 @@ export default function ScheduleScreen() {
 
           {/* 정기 수거 현황 */}
           <View className="bg-white border border-border rounded-xl p-4 mb-3">
-            <View className="flex-row items-center justify-between mb-3">
+            <View className="flex-row items-center justify-between">
               <View className="flex-row items-center">
-                <Trash2 size={20} color="#67c0a1" />
-                <Text className="text-foreground font-semibold ml-2">정기 수거</Text>
+                <Trash2 size={18} color="#67c0a1" />
+                <Text className="text-foreground font-medium ml-2">정기 수거</Text>
               </View>
-              <Text className="text-muted text-sm">
-                {monthlyStats.completedPickups}/{plan.monthlyPickups}회 완료
-              </Text>
+              <View className="flex-row items-center">
+                <View className="flex-row items-center mr-2">
+                  {renderSimpleIcons(monthlyStats.remainingPickups, plan.monthlyPickups, "pickup")}
+                </View>
+                <Text className="text-muted text-sm">
+                  {monthlyStats.remainingPickups}/{plan.monthlyPickups}
+                </Text>
+              </View>
             </View>
-            <View className="flex-row">
-              {renderRemainingIcons(monthlyStats.remainingPickups, plan.monthlyPickups, "pickup")}
-            </View>
-            <Text className="text-muted text-xs mt-2">
-              남은 수거: {monthlyStats.remainingPickups}회
-            </Text>
           </View>
 
           {/* 정기 청소 현황 */}
           <View className="bg-white border border-border rounded-xl p-4">
-            <View className="flex-row items-center justify-between mb-3">
+            <View className="flex-row items-center justify-between">
               <View className="flex-row items-center">
-                <Sparkles size={20} color="#3B82F6" />
-                <Text className="text-foreground font-semibold ml-2">정기 청소</Text>
+                <Sparkles size={18} color="#3B82F6" />
+                <Text className="text-foreground font-medium ml-2">정기 청소</Text>
               </View>
-              <Text className="text-muted text-sm">
-                {monthlyStats.completedCleaning}/{plan.monthlyCleaning}회 완료
-              </Text>
+              <View className="flex-row items-center">
+                <View className="flex-row items-center mr-2">
+                  {renderSimpleIcons(monthlyStats.remainingCleaning, plan.monthlyCleaning, "cleaning")}
+                </View>
+                <Text className="text-muted text-sm">
+                  {monthlyStats.remainingCleaning}/{plan.monthlyCleaning}
+                </Text>
+              </View>
             </View>
-            <View className="flex-row">
-              {renderRemainingIcons(monthlyStats.remainingCleaning, plan.monthlyCleaning, "cleaning")}
-            </View>
-            <Text className="text-muted text-xs mt-2">
-              남은 청소: {monthlyStats.remainingCleaning}회
-            </Text>
           </View>
         </View>
 
@@ -401,71 +392,92 @@ export default function ScheduleScreen() {
         <View className="h-8" />
       </ScrollView>
 
-      {/* 수거 신청 모달 */}
+      {/* 수거 신청 드로어 */}
       <Modal
         visible={showRequestModal}
         transparent
-        animationType="slide"
+        animationType="fade"
         onRequestClose={() => setShowRequestModal(false)}
       >
-        <View className="flex-1 justify-end bg-black/50">
-          <View className="bg-white rounded-t-3xl p-6">
-            <View className="flex-row items-center justify-between mb-4">
-              <Text className="text-lg font-bold text-foreground">수거 신청</Text>
-              <Pressable onPress={() => setShowRequestModal(false)}>
-                <X size={24} color="#6B7280" />
-              </Pressable>
+        {/* 배경 오버레이 - 별도 분리 */}
+        <Pressable
+          className="absolute inset-0 bg-black/40"
+          onPress={() => setShowRequestModal(false)}
+        />
+
+        {/* 드로어 컨텐츠 - 중앙~상단 위치 */}
+        <View className="flex-1 justify-center px-4 py-20">
+          <View className="bg-white rounded-2xl overflow-hidden shadow-xl">
+            {/* 드로어 핸들 */}
+            <View className="items-center pt-3 pb-2">
+              <View className="w-10 h-1 bg-gray-300 rounded-full" />
             </View>
 
-            <View className="bg-surface rounded-xl p-4 mb-4">
-              <View className="flex-row items-center">
-                <CalendarIcon size={20} color="#67c0a1" />
-                <Text className="text-foreground font-medium ml-2">
-                  {selectedDate &&
-                    new Date(selectedDate).toLocaleDateString("ko-KR", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      weekday: "long",
-                    })}
-                </Text>
+            <View className="px-5 pb-6">
+              {/* 헤더 */}
+              <View className="flex-row items-center justify-between mb-5">
+                <Text className="text-lg font-bold text-foreground">수거 신청</Text>
+                <Pressable
+                  onPress={() => setShowRequestModal(false)}
+                  className="w-8 h-8 rounded-full bg-gray-100 items-center justify-center"
+                >
+                  <X size={18} color="#6B7280" />
+                </Pressable>
               </View>
-            </View>
 
-            <View className="mb-4">
-              <Text className="text-sm font-medium text-foreground mb-2">요청 사항 (선택)</Text>
-              <TextInput
-                className="bg-surface border border-border rounded-xl px-4 py-3 text-foreground"
-                placeholder="추가 요청 사항이 있으면 입력해주세요"
-                placeholderTextColor="#9CA3AF"
-                value={requestNote}
-                onChangeText={setRequestNote}
-                multiline
-                numberOfLines={3}
-                textAlignVertical="top"
-              />
-            </View>
+              {/* 선택된 날짜 */}
+              <View className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-5">
+                <View className="flex-row items-center">
+                  <CalendarIcon size={20} color="#67c0a1" />
+                  <Text className="text-foreground font-medium ml-2">
+                    {selectedDate &&
+                      new Date(selectedDate).toLocaleDateString("ko-KR", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                        weekday: "long",
+                      })}
+                  </Text>
+                </View>
+              </View>
 
-            <View className="flex-row gap-3">
-              <Pressable
-                className="flex-1 py-4 bg-surface rounded-xl items-center"
-                onPress={() => setShowRequestModal(false)}
-              >
-                <Text className="text-foreground font-medium">취소</Text>
-              </Pressable>
-              <Pressable
-                className={`flex-1 py-4 rounded-xl items-center ${
-                  submitting ? "bg-primary/50" : "bg-primary"
-                }`}
-                onPress={handleSubmitRequest}
-                disabled={submitting}
-              >
-                {submitting ? (
-                  <ActivityIndicator size="small" color="#ffffff" />
-                ) : (
-                  <Text className="text-white font-semibold">신청하기</Text>
-                )}
-              </Pressable>
+              {/* 요청 사항 */}
+              <View className="mb-5">
+                <Text className="text-sm font-medium text-foreground mb-2">요청 사항 (선택)</Text>
+                <TextInput
+                  className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-foreground min-h-[80px]"
+                  placeholder="추가 요청 사항이 있으면 입력해주세요"
+                  placeholderTextColor="#9CA3AF"
+                  value={requestNote}
+                  onChangeText={setRequestNote}
+                  multiline
+                  numberOfLines={3}
+                  textAlignVertical="top"
+                />
+              </View>
+
+              {/* 버튼 */}
+              <View className="flex-row gap-3">
+                <Pressable
+                  className="flex-1 py-4 bg-gray-100 rounded-xl items-center active:bg-gray-200"
+                  onPress={() => setShowRequestModal(false)}
+                >
+                  <Text className="text-foreground font-medium">취소</Text>
+                </Pressable>
+                <Pressable
+                  className={`flex-1 py-4 rounded-xl items-center ${
+                    submitting ? "bg-primary/50" : "bg-primary active:bg-primary/90"
+                  }`}
+                  onPress={handleSubmitRequest}
+                  disabled={submitting}
+                >
+                  {submitting ? (
+                    <ActivityIndicator size="small" color="#ffffff" />
+                  ) : (
+                    <Text className="text-white font-semibold">신청하기</Text>
+                  )}
+                </Pressable>
+              </View>
             </View>
           </View>
         </View>
