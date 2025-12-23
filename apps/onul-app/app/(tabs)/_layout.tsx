@@ -10,6 +10,7 @@ import {
   CalendarCheck,
   User,
   Sparkles,
+  Home,
 } from "lucide-react-native";
 import DrawerMenu from "../../src/components/DrawerMenu";
 import Sidebar from "../../src/components/Sidebar";
@@ -52,12 +53,23 @@ export default function TabLayout() {
                 },
               }}
             >
-              {/* 마스터/관리자: 대시보드, 클라이언트: 숨김 */}
+              {/* 클라이언트: 대시보드 (숫자 중심), 마스터: 숨김 */}
               <Tabs.Screen
                 name="index"
                 options={{
                   title: "대시보드",
-                  href: isClient ? null : "/(tabs)/index",
+                  href: isClient ? "/(tabs)" : null,
+                  tabBarIcon: ({ color, size }) => (
+                    <Home size={size} color={color} />
+                  ),
+                }}
+              />
+              {/* 마스터/관리자: 대시보드 (캘린더) */}
+              <Tabs.Screen
+                name="master-dashboard"
+                options={{
+                  title: "대시보드",
+                  href: isClient ? null : "/(tabs)/master-dashboard",
                   tabBarIcon: ({ color, size }) => (
                     <LayoutDashboard size={size} color={color} />
                   ),
@@ -85,7 +97,7 @@ export default function TabLayout() {
                   ),
                 }}
               />
-              {/* 클라이언트: 정기관리 (첫번째 탭) */}
+              {/* 클라이언트: 정기관리 (두번째 탭) */}
               <Tabs.Screen
                 name="schedule"
                 options={{
@@ -176,12 +188,23 @@ export default function TabLayout() {
           },
         }}
       >
-        {/* 마스터/관리자: 대시보드, 클라이언트: 숨김 */}
+        {/* 클라이언트: 대시보드 (숫자 중심), 마스터: 숨김 */}
         <Tabs.Screen
           name="index"
           options={{
             title: "대시보드",
-            href: isClient ? null : "/(tabs)/index",
+            href: isClient ? "/(tabs)" : null,
+            tabBarIcon: ({ color, size }) => (
+              <Home size={size} color={color} />
+            ),
+          }}
+        />
+        {/* 마스터/관리자: 대시보드 (캘린더) */}
+        <Tabs.Screen
+          name="master-dashboard"
+          options={{
+            title: "대시보드",
+            href: isClient ? null : "/(tabs)/master-dashboard",
             tabBarIcon: ({ color, size }) => (
               <LayoutDashboard size={size} color={color} />
             ),
@@ -207,7 +230,7 @@ export default function TabLayout() {
             tabBarIcon: ({ color, size }) => <Store size={size} color={color} />,
           }}
         />
-        {/* 클라이언트: 정기관리 (첫번째 탭) */}
+        {/* 클라이언트: 정기관리 (두번째 탭) */}
         <Tabs.Screen
           name="schedule"
           options={{

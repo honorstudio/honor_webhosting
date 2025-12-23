@@ -28,6 +28,7 @@ import { useAuth } from "../../src/contexts/AuthContext";
 import { supabase } from "../../src/lib/supabase";
 import { useToast } from "../../src/components/Toast";
 import BottomSheet from "../../src/components/BottomSheet";
+import BottomTabBar from "../../src/components/BottomTabBar";
 
 interface MinorProject {
   id: string;
@@ -704,6 +705,9 @@ export default function ProjectDetailScreen() {
           })}
         </View>
       </BottomSheet>
+
+      {/* 하단 탭바 */}
+      <BottomTabBar />
     </View>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -7,441 +7,184 @@ import {
   ActivityIndicator,
   RefreshControl,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { useRouter, Redirect } from "expo-router";
 import {
-  User,
-  ChevronRight,
-  Settings,
   Trash2,
-  CheckCircle,
+  Sparkles,
   Clock,
-  Building2,
-  MapPin,
-  Briefcase,
-  Users,
+  CheckCircle2,
+  AlertCircle,
+  Calendar,
   TrendingUp,
-  Calendar as CalendarIcon,
+  Package,
 } from "lucide-react-native";
 import { useAuth } from "../../src/contexts/AuthContext";
 import { useDevView } from "../../src/contexts/DevViewContext";
 import { supabase } from "../../src/lib/supabase";
-import { useResponsive } from "../../src/hooks/useResponsive";
-import DashboardCalendar, { ScheduleItem } from "../../src/components/DashboardCalendar";
 
-interface MinorProject {
-  id: string;
-  title: string;
-  status: string;
-  started_at: string | null;
-  major_project: {
-    id: string;
-    title: string;
-    scheduled_date: string | null;
-    location: string | null;
-  } | null;
-}
-
-interface ClientProject {
-  id: string;
-  title: string;
-  status: string;
-  location: string | null;
-  scheduled_date: string | null;
-  minor_projects_count: number;
-  completed_count: number;
-  review_count: number;
-}
-
-// 마스터 통계 인터페이스
-interface MasterStats {
-  totalProjects: number;
-  completedThisMonth: number;
-  assignedStores: number;
-  availableProjects: number;
-}
-
-// 클라이언트 통계 인터페이스
-interface ClientStats {
+interface DashboardStats {
+  // 이번 달 통계
+  monthlyPickups: number;
+  monthlyPickupsUsed: number;
+  monthlyCleaning: number;
+  monthlyCleaningUsed: number;
+  // 전체 통계
   totalPickups: number;
+  totalCleaning: number;
   completedPickups: number;
-  nextPickupDate: string | null;
-  pendingReviews: number;
+  completedCleaning: number;
+  pendingRequests: number;
+  // 다음 일정
+  nextScheduleDate: string | null;
+  nextScheduleType: "pickup" | "cleaning" | null;
 }
 
-export default function DashboardScreen() {
+export default function ClientDashboardScreen() {
   const router = useRouter();
-  const { profile, loading: authLoading } = useAuth();
+  const { profile } = useAuth();
   const { getEffectiveRole } = useDevView();
-  const { isDesktop, isTablet, showSidebar } = useResponsive();
-
-  const effectiveRole = getEffectiveRole(profile?.role);
-  const useGridLayout = isDesktop || isTablet;
-
-  // 마스터용 상태
-  const [projects, setProjects] = useState<MinorProject[]>([]);
-  const [completedProjects, setCompletedProjects] = useState<MinorProject[]>([]);
-  const [masterStats, setMasterStats] = useState<MasterStats>({
-    totalProjects: 0,
-    completedThisMonth: 0,
-    assignedStores: 0,
-    availableProjects: 0,
-  });
-
-  // 클라이언트용 상태
-  const [clientProjects, setClientProjects] = useState<ClientProject[]>([]);
-  const [clientCompletedProjects, setClientCompletedProjects] = useState<ClientProject[]>([]);
-  const [clientStats, setClientStats] = useState<ClientStats>({
-    totalPickups: 0,
-    completedPickups: 0,
-    nextPickupDate: null,
-    pendingReviews: 0,
-  });
-
-  // 캘린더 스케줄
-  const [schedules, setSchedules] = useState<ScheduleItem[]>([]);
-
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [stats, setStats] = useState<DashboardStats>({
+    monthlyPickups: 2,
+    monthlyPickupsUsed: 0,
+    monthlyCleaning: 1,
+    monthlyCleaningUsed: 0,
+    totalPickups: 0,
+    totalCleaning: 0,
+    completedPickups: 0,
+    completedCleaning: 0,
+    pendingRequests: 0,
+    nextScheduleDate: null,
+    nextScheduleType: null,
+  });
 
-  const getRoleLabel = (role: string | undefined) => {
-    switch (role) {
-      case "super_admin":
-        return "최고 관리자";
-      case "project_manager":
-        return "프로젝트 책임자";
-      case "master":
-        return "마스터";
-      case "client":
-        return "클라이언트";
-      default:
-        return "";
+  const effectiveRole = getEffectiveRole(profile?.role);
+
+  const fetchStats = useCallback(async () => {
+    if (!profile?.id) {
+      setLoading(false);
+      return;
     }
-  };
-
-  const getStatusLabel = (status: string) => {
-    switch (status) {
-      case "in_progress":
-        return { label: "진행중", color: "bg-primary/10", textColor: "text-primary" };
-      case "review":
-        return { label: "검토 대기", color: "bg-amber-100", textColor: "text-amber-600" };
-      case "completed":
-        return { label: "완료", color: "bg-surface", textColor: "text-muted" };
-      case "recruiting":
-        return { label: "모집중", color: "bg-blue-100", textColor: "text-blue-600" };
-      case "draft":
-        return { label: "준비중", color: "bg-gray-100", textColor: "text-gray-600" };
-      default:
-        return { label: status, color: "bg-surface", textColor: "text-muted" };
-    }
-  };
-
-  // D-Day 계산
-  const getDDay = (dateStr: string | null) => {
-    if (!dateStr) return null;
-    const target = new Date(dateStr);
-    const now = new Date();
-    target.setHours(0, 0, 0, 0);
-    now.setHours(0, 0, 0, 0);
-    const diff = Math.ceil((target.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
-    if (diff === 0) return "오늘";
-    if (diff === 1) return "내일";
-    if (diff > 0) return `D-${diff}`;
-    return null;
-  };
-
-  // 마스터 프로젝트 조회
-  const fetchMasterProjects = useCallback(async () => {
-    if (!profile?.id) return;
 
     try {
-      const inProgress: MinorProject[] = [];
-      const completed: MinorProject[] = [];
-      const calendarSchedules: ScheduleItem[] = [];
-      const addedProjectIds = new Set<string>();
-
-      // 1. 참가자로 등록된 소형 프로젝트 조회
-      const { data: participations, error: partError } = await supabase
-        .from("onul_project_participants")
-        .select(`
-          minor_project_id,
-          onul_minor_projects (
-            id,
-            title,
-            status,
-            started_at,
-            major_project_id,
-            onul_major_projects (
-              id,
-              title,
-              scheduled_date,
-              location
-            )
-          )
-        `)
-        .eq("master_id", profile.id)
-        .eq("status", "approved");
-
-      if (partError) throw partError;
-
-      participations?.forEach((p: any) => {
-        const project = p.onul_minor_projects;
-        if (project) {
-          addedProjectIds.add(project.id);
-          const mapped: MinorProject = {
-            id: project.id,
-            title: project.title,
-            status: project.status,
-            started_at: project.started_at,
-            major_project: project.onul_major_projects
-              ? {
-                  id: project.onul_major_projects.id,
-                  title: project.onul_major_projects.title,
-                  scheduled_date: project.onul_major_projects.scheduled_date,
-                  location: project.onul_major_projects.location,
-                }
-              : null,
-          };
-
-          // 캘린더 스케줄 추가
-          if (project.onul_major_projects?.scheduled_date) {
-            calendarSchedules.push({
-              id: project.id,
-              date: project.onul_major_projects.scheduled_date,
-              title: project.title,
-              location: project.onul_major_projects.location,
-              status: project.status === "completed" ? "completed" : project.status === "review" ? "review" : "scheduled",
-              type: "cleaning",
-            });
-          }
-
-          if (project.status === "completed") {
-            completed.push(mapped);
-          } else {
-            inProgress.push(mapped);
-          }
-        }
-      });
-
-      // 2. 담당자(manager)로 등록된 대형 프로젝트의 소형 프로젝트 조회
-      const { data: managedProjects, error: managedError } = await supabase
-        .from("onul_major_projects")
-        .select(`
-          id,
-          title,
-          scheduled_date,
-          location,
-          onul_minor_projects (
-            id,
-            title,
-            status,
-            started_at
-          )
-        `)
-        .eq("manager_id", profile.id)
-        .neq("status", "completed");
-
-      if (managedError) throw managedError;
-
-      managedProjects?.forEach((mp: any) => {
-        const minorProjects = mp.onul_minor_projects || [];
-        minorProjects.forEach((project: any) => {
-          if (addedProjectIds.has(project.id)) return;
-
-          addedProjectIds.add(project.id);
-          const mapped: MinorProject = {
-            id: project.id,
-            title: project.title,
-            status: project.status,
-            started_at: project.started_at,
-            major_project: {
-              id: mp.id,
-              title: mp.title,
-              scheduled_date: mp.scheduled_date,
-              location: mp.location,
-            },
-          };
-
-          if (mp.scheduled_date) {
-            calendarSchedules.push({
-              id: project.id,
-              date: mp.scheduled_date,
-              title: project.title,
-              location: mp.location,
-              status: project.status === "completed" ? "completed" : "scheduled",
-              type: "cleaning",
-            });
-          }
-
-          if (project.status === "completed") {
-            completed.push(mapped);
-          } else {
-            inProgress.push(mapped);
-          }
-        });
-      });
-
-      // 3. 지원 가능한 프로젝트 수 조회
-      const { count: availableCount } = await supabase
-        .from("onul_major_projects")
-        .select("*", { count: "exact", head: true })
-        .eq("status", "recruiting");
-
-      // 4. 담당 매장 수 조회
-      const { count: storeCount } = await supabase
-        .from("onul_stores")
-        .select("*", { count: "exact", head: true })
-        .eq("assigned_master_id", profile.id);
-
-      // 이번 달 완료 프로젝트 수 계산
       const now = new Date();
-      const thisMonthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-      const completedThisMonth = completed.filter(
-        (p) => p.started_at && p.started_at >= thisMonthStart
-      ).length;
+      const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
 
-      setProjects(inProgress);
-      setCompletedProjects(completed.slice(0, 3));
-      setSchedules(calendarSchedules);
-      setMasterStats({
-        totalProjects: addedProjectIds.size,
-        completedThisMonth,
-        assignedStores: storeCount || 0,
-        availableProjects: availableCount || 0,
-      });
-    } catch (error) {
-      console.error("Error fetching master projects:", error);
-    }
-  }, [profile]);
-
-  // 클라이언트 프로젝트 조회
-  const fetchClientProjects = useCallback(async () => {
-    if (!profile?.id) return;
-
-    try {
-      const calendarSchedules: ScheduleItem[] = [];
-
-      const { data: majorProjects, error } = await supabase
+      // 전체 프로젝트 조회
+      const { data: allProjects, error } = await supabase
         .from("onul_major_projects")
-        .select(`
-          id,
-          title,
-          status,
-          location,
-          scheduled_date,
-          onul_minor_projects (
-            id,
-            status
-          )
-        `)
-        .eq("client_id", profile.id)
-        .order("created_at", { ascending: false });
+        .select("id, title, status, scheduled_date")
+        .eq("client_id", profile.id);
 
       if (error) throw error;
 
-      const inProgress: ClientProject[] = [];
-      const completed: ClientProject[] = [];
-      let totalPickups = 0;
-      let completedPickups = 0;
-      let pendingReviews = 0;
-      let nextPickupDate: string | null = null;
+      const projects = allProjects || [];
 
-      majorProjects?.forEach((mp: any) => {
-        const minorProjects = mp.onul_minor_projects || [];
-        const completedCount = minorProjects.filter((p: any) => p.status === "completed").length;
-        const reviewCount = minorProjects.filter((p: any) => p.status === "review").length;
+      // 이번 달 완료된 수거
+      const monthlyPickupsUsed = projects.filter((p) => {
+        const date = p.scheduled_date ? new Date(p.scheduled_date) : null;
+        return (
+          !p.title.includes("청소") &&
+          p.status === "completed" &&
+          date &&
+          date >= firstDayOfMonth &&
+          date <= lastDayOfMonth
+        );
+      }).length;
 
-        totalPickups += minorProjects.length;
-        completedPickups += completedCount;
-        pendingReviews += reviewCount;
+      // 이번 달 완료된 청소
+      const monthlyCleaningUsed = projects.filter((p) => {
+        const date = p.scheduled_date ? new Date(p.scheduled_date) : null;
+        return (
+          p.title.includes("청소") &&
+          p.status === "completed" &&
+          date &&
+          date >= firstDayOfMonth &&
+          date <= lastDayOfMonth
+        );
+      }).length;
 
-        // 캘린더 스케줄 추가
-        if (mp.scheduled_date) {
-          calendarSchedules.push({
-            id: mp.id,
-            date: mp.scheduled_date,
-            title: mp.title,
-            location: mp.location,
-            status: mp.status === "completed" ? "completed" : reviewCount > 0 ? "review" : "scheduled",
-            type: "pickup",
-          });
+      // 전체 수거/청소
+      const totalPickups = projects.filter((p) => !p.title.includes("청소")).length;
+      const totalCleaning = projects.filter((p) => p.title.includes("청소")).length;
 
-          // 다음 수거일 계산
-          const today = new Date().toISOString().split("T")[0];
-          if (mp.status !== "completed" && mp.scheduled_date >= today) {
-            if (!nextPickupDate || mp.scheduled_date < nextPickupDate) {
-              nextPickupDate = mp.scheduled_date;
-            }
-          }
-        }
+      // 완료된 수거/청소
+      const completedPickups = projects.filter(
+        (p) => !p.title.includes("청소") && p.status === "completed"
+      ).length;
+      const completedCleaning = projects.filter(
+        (p) => p.title.includes("청소") && p.status === "completed"
+      ).length;
 
-        const mapped: ClientProject = {
-          id: mp.id,
-          title: mp.title,
-          status: mp.status,
-          location: mp.location,
-          scheduled_date: mp.scheduled_date,
-          minor_projects_count: minorProjects.length,
-          completed_count: completedCount,
-          review_count: reviewCount,
-        };
+      // 대기중인 요청
+      const pendingRequests = projects.filter((p) => p.status === "pending").length;
 
-        if (mp.status === "completed") {
-          completed.push(mapped);
-        } else {
-          inProgress.push(mapped);
-        }
-      });
+      // 다음 일정 찾기
+      const upcomingProjects = projects
+        .filter((p) => {
+          const date = p.scheduled_date ? new Date(p.scheduled_date) : null;
+          return date && date >= now && p.status !== "completed";
+        })
+        .sort((a, b) => {
+          const dateA = new Date(a.scheduled_date!);
+          const dateB = new Date(b.scheduled_date!);
+          return dateA.getTime() - dateB.getTime();
+        });
 
-      setClientProjects(inProgress);
-      setClientCompletedProjects(completed.slice(0, 3));
-      setSchedules(calendarSchedules);
-      setClientStats({
+      const nextSchedule = upcomingProjects[0];
+
+      setStats({
+        monthlyPickups: 2, // 구독 플랜에서 가져와야 함
+        monthlyPickupsUsed,
+        monthlyCleaning: 1,
+        monthlyCleaningUsed,
         totalPickups,
+        totalCleaning,
         completedPickups,
-        nextPickupDate,
-        pendingReviews,
+        completedCleaning,
+        pendingRequests,
+        nextScheduleDate: nextSchedule?.scheduled_date || null,
+        nextScheduleType: nextSchedule
+          ? nextSchedule.title.includes("청소")
+            ? "cleaning"
+            : "pickup"
+          : null,
       });
     } catch (error) {
-      console.error("Error fetching client projects:", error);
-    }
-  }, [profile]);
-
-  const fetchProjects = useCallback(async () => {
-    if (!profile?.id) return;
-
-    try {
-      if (effectiveRole === "master") {
-        await fetchMasterProjects();
-      } else if (effectiveRole === "client") {
-        await fetchClientProjects();
-      }
-    } catch (error) {
-      console.error("Error fetching projects:", error);
+      console.error("Error fetching stats:", error);
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
-  }, [profile, effectiveRole, fetchMasterProjects, fetchClientProjects]);
+  }, [profile]);
 
   useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+    fetchStats();
+  }, [fetchStats]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchProjects();
-  }, [fetchProjects]);
+    fetchStats();
+  }, [fetchStats]);
 
-  // 캘린더 아이템 클릭 핸들러
-  const handleScheduleItemPress = (item: ScheduleItem) => {
-    if (effectiveRole === "client") {
-      router.push(`/client/project/${item.id}`);
-    } else {
-      router.push(`/project/minor/${item.id}`);
-    }
+  // 클라이언트가 아닌 경우 master-dashboard로 리다이렉트
+  if (effectiveRole && effectiveRole !== "client") {
+    return <Redirect href="/(tabs)/master-dashboard" />;
+  }
+
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return "예정 없음";
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ko-KR", {
+      month: "long",
+      day: "numeric",
+      weekday: "short",
+    });
   };
 
-  if (authLoading || loading) {
+  if (loading) {
     return (
       <View className="flex-1 bg-background items-center justify-center">
         <ActivityIndicator size="large" color="#67c0a1" />
@@ -449,378 +192,159 @@ export default function DashboardScreen() {
     );
   }
 
-  // ==================== 클라이언트 대시보드 ====================
-  if (effectiveRole === "client") {
-    return (
+  const currentMonth = new Date().toLocaleDateString("ko-KR", { month: "long" });
+
+  return (
+    <View className="flex-1 bg-background">
       <ScrollView
-        className="flex-1 bg-background"
+        className="flex-1"
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#67c0a1" />
         }
       >
-        {/* 프로필 헤더 */}
-        <View className="bg-white px-6 py-5 border-b border-border">
+        {/* 다음 일정 카드 */}
+        <View className="mx-4 mt-4 bg-primary rounded-2xl p-5">
           <View className="flex-row items-center justify-between">
-            <Pressable
-              className="flex-row items-center flex-1"
-              onPress={() => router.push("/profile")}
-            >
-              <View className="w-14 h-14 rounded-full bg-primary/10 items-center justify-center">
-                <Building2 size={28} color="#67c0a1" />
-              </View>
-              <View className="ml-4 flex-1">
-                <Text className="text-lg font-bold text-foreground">
-                  {profile?.name || "이름 없음"}
-                </Text>
-                <Text className="text-sm text-muted">{getRoleLabel(effectiveRole)}</Text>
-              </View>
-            </Pressable>
-            <Pressable className="p-2" onPress={() => router.push("/profile")}>
-              <Settings size={22} color="#6B7280" />
-            </Pressable>
-          </View>
-        </View>
-
-        {/* 수거 현황 요약 카드 */}
-        <View className="px-4 pt-4">
-          <View className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-5 shadow-sm">
-            <View className="flex-row items-center justify-between mb-4">
-              <View>
-                <Text className="text-white/80 text-sm">다음 수거 예정일</Text>
-                <Text className="text-white text-2xl font-bold mt-1">
-                  {clientStats.nextPickupDate
-                    ? getDDay(clientStats.nextPickupDate) || "예정 없음"
-                    : "예정 없음"}
-                </Text>
-                {clientStats.nextPickupDate && (
-                  <Text className="text-white/70 text-sm mt-0.5">
-                    {clientStats.nextPickupDate}
-                  </Text>
-                )}
-              </View>
-              <View className="w-16 h-16 rounded-full bg-white/20 items-center justify-center">
-                <Trash2 size={32} color="#ffffff" />
-              </View>
-            </View>
-
-            <View className="flex-row gap-3">
-              <View className="flex-1 bg-white/15 rounded-xl p-3">
-                <Text className="text-white/70 text-xs">전체 수거</Text>
-                <Text className="text-white text-lg font-bold">{clientStats.totalPickups}건</Text>
-              </View>
-              <View className="flex-1 bg-white/15 rounded-xl p-3">
-                <Text className="text-white/70 text-xs">완료</Text>
-                <Text className="text-white text-lg font-bold">{clientStats.completedPickups}건</Text>
-              </View>
-              <View className="flex-1 bg-white/15 rounded-xl p-3">
-                <Text className="text-white/70 text-xs">검토 대기</Text>
-                <Text className="text-white text-lg font-bold">{clientStats.pendingReviews}건</Text>
-              </View>
-            </View>
-          </View>
-        </View>
-
-        {/* 검토 대기 알림 */}
-        {clientStats.pendingReviews > 0 && (
-          <Pressable
-            className="mx-4 mt-4 bg-amber-50 border border-amber-200 rounded-xl p-4 flex-row items-center active:opacity-80"
-            onPress={() => {
-              const projectWithReview = clientProjects.find((p) => p.review_count > 0);
-              if (projectWithReview) {
-                router.push(`/client/project/${projectWithReview.id}`);
-              }
-            }}
-          >
-            <View className="w-10 h-10 rounded-full bg-amber-100 items-center justify-center mr-3">
-              <CheckCircle size={20} color="#D97706" />
-            </View>
-            <View className="flex-1">
-              <Text className="text-amber-800 font-semibold">검토 대기 중인 작업이 있습니다</Text>
-              <Text className="text-amber-600 text-sm mt-0.5">
-                {clientStats.pendingReviews}건의 작업 확인이 필요합니다
+            <View>
+              <Text className="text-white/80 text-sm">다음 일정</Text>
+              <Text className="text-white font-bold text-xl mt-1">
+                {formatDate(stats.nextScheduleDate)}
               </Text>
+              {stats.nextScheduleType && (
+                <Text className="text-white/80 text-sm mt-1">
+                  {stats.nextScheduleType === "pickup" ? "정기 수거" : "청소 서비스"}
+                </Text>
+              )}
             </View>
-            <ChevronRight size={20} color="#D97706" />
-          </Pressable>
-        )}
-
-        {/* 캘린더 */}
-        <View className="px-4 mt-4">
-          <DashboardCalendar
-            schedules={schedules}
-            onItemPress={handleScheduleItemPress}
-          />
+            <View className="w-14 h-14 bg-white/20 rounded-full items-center justify-center">
+              <Calendar size={28} color="#ffffff" />
+            </View>
+          </View>
         </View>
 
-        {/* 진행 중인 프로젝트 */}
-        <View className="px-4 mt-6">
-          <View className="flex-row items-center justify-between mb-3">
-            <Text className="text-base font-bold text-foreground">
-              진행 중인 수거 ({clientProjects.length})
-            </Text>
+        {/* 이번 달 현황 */}
+        <View className="mx-4 mt-6">
+          <Text className="text-lg font-bold text-foreground mb-3">{currentMonth} 현황</Text>
+
+          <View className="flex-row gap-3">
+            {/* 정기 수거 */}
+            <View className="flex-1 bg-white border border-border rounded-xl p-4">
+              <View className="flex-row items-center mb-3">
+                <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center">
+                  <Trash2 size={20} color="#67c0a1" />
+                </View>
+                <Text className="text-foreground font-medium ml-2">정기 수거</Text>
+              </View>
+              <View className="flex-row items-end">
+                <Text className="text-3xl font-bold text-foreground">
+                  {stats.monthlyPickups - stats.monthlyPickupsUsed}
+                </Text>
+                <Text className="text-muted text-sm ml-1 mb-1">
+                  / {stats.monthlyPickups}회 남음
+                </Text>
+              </View>
+            </View>
+
+            {/* 정기 청소 */}
+            <View className="flex-1 bg-white border border-border rounded-xl p-4">
+              <View className="flex-row items-center mb-3">
+                <View className="w-10 h-10 bg-gray-100 rounded-full items-center justify-center">
+                  <Sparkles size={20} color="#111827" />
+                </View>
+                <Text className="text-foreground font-medium ml-2">정기 청소</Text>
+              </View>
+              <View className="flex-row items-end">
+                <Text className="text-3xl font-bold text-foreground">
+                  {stats.monthlyCleaning - stats.monthlyCleaningUsed}
+                </Text>
+                <Text className="text-muted text-sm ml-1 mb-1">
+                  / {stats.monthlyCleaning}회 남음
+                </Text>
+              </View>
+            </View>
           </View>
+        </View>
 
-          {clientProjects.length > 0 ? (
-            <View className="gap-3">
-              {clientProjects.slice(0, 3).map((project) => {
-                const status = getStatusLabel(project.status);
-                const hasReview = project.review_count > 0;
+        {/* 전체 통계 */}
+        <View className="mx-4 mt-6">
+          <Text className="text-lg font-bold text-foreground mb-3">전체 통계</Text>
 
-                return (
-                  <Pressable
-                    key={project.id}
-                    className={`bg-white border rounded-xl p-4 active:opacity-80 ${
-                      hasReview ? "border-amber-300" : "border-border"
-                    }`}
-                    onPress={() => router.push(`/client/project/${project.id}`)}
-                  >
-                    <View className="flex-row justify-between items-start">
-                      <View className="flex-1">
-                        <View className="flex-row items-center">
-                          <Text className="text-foreground font-semibold text-base flex-1">
-                            {project.title}
-                          </Text>
-                          {hasReview && (
-                            <View className="bg-amber-100 px-2 py-0.5 rounded-full mr-2">
-                              <Text className="text-amber-600 text-xs font-medium">
-                                검토 {project.review_count}건
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                        {project.location && (
-                          <View className="flex-row items-center mt-1.5">
-                            <MapPin size={12} color="#6B7280" />
-                            <Text className="text-muted text-sm ml-1">{project.location}</Text>
-                          </View>
-                        )}
-                        <View className="flex-row items-center mt-1.5">
-                          <Clock size={12} color="#6B7280" />
-                          <Text className="text-muted text-sm ml-1">
-                            {project.scheduled_date || "일정 미정"}
-                          </Text>
-                          <View className="mx-2 w-1 h-1 bg-muted rounded-full" />
-                          <Text className="text-muted text-sm">
-                            {project.completed_count}/{project.minor_projects_count} 완료
-                          </Text>
-                        </View>
-                      </View>
-                      <ChevronRight size={20} color="#9CA3AF" />
-                    </View>
-                  </Pressable>
-                );
-              })}
+          <View className="bg-white border border-border rounded-xl overflow-hidden">
+            {/* 총 수거 */}
+            <Pressable
+              className="flex-row items-center justify-between p-4 border-b border-border active:bg-gray-50"
+              onPress={() => router.push("/(tabs)/schedule")}
+            >
+              <View className="flex-row items-center">
+                <View className="w-10 h-10 bg-primary/10 rounded-full items-center justify-center">
+                  <Package size={20} color="#67c0a1" />
+                </View>
+                <View className="ml-3">
+                  <Text className="text-foreground font-medium">총 수거 횟수</Text>
+                  <Text className="text-muted text-sm">{stats.completedPickups}회 완료</Text>
+                </View>
+              </View>
+              <Text className="text-2xl font-bold text-primary">{stats.totalPickups}</Text>
+            </Pressable>
+
+            {/* 총 청소 */}
+            <Pressable
+              className="flex-row items-center justify-between p-4 border-b border-border active:bg-gray-50"
+              onPress={() => router.push("/(tabs)/cleaning")}
+            >
+              <View className="flex-row items-center">
+                <View className="w-10 h-10 bg-gray-100 rounded-full items-center justify-center">
+                  <Sparkles size={20} color="#111827" />
+                </View>
+                <View className="ml-3">
+                  <Text className="text-foreground font-medium">총 청소 횟수</Text>
+                  <Text className="text-muted text-sm">{stats.completedCleaning}회 완료</Text>
+                </View>
+              </View>
+              <Text className="text-2xl font-bold text-foreground">{stats.totalCleaning}</Text>
+            </Pressable>
+
+            {/* 대기중 요청 */}
+            <View className="flex-row items-center justify-between p-4">
+              <View className="flex-row items-center">
+                <View className="w-10 h-10 bg-gray-100 rounded-full items-center justify-center">
+                  <Clock size={20} color="#111827" />
+                </View>
+                <View className="ml-3">
+                  <Text className="text-foreground font-medium">대기중인 요청</Text>
+                  <Text className="text-muted text-sm">검토 대기중</Text>
+                </View>
+              </View>
+              <Text className="text-2xl font-bold text-foreground">{stats.pendingRequests}</Text>
             </View>
-          ) : (
-            <View className="bg-white border border-border rounded-xl p-6 items-center">
-              <Trash2 size={32} color="#D1D5DB" />
-              <Text className="text-muted mt-2">진행 중인 수거가 없습니다</Text>
-            </View>
-          )}
+          </View>
+        </View>
+
+        {/* 빠른 액션 */}
+        <View className="mx-4 mt-6">
+          <Text className="text-lg font-bold text-foreground mb-3">빠른 액션</Text>
+
+          <View className="flex-row gap-3">
+            <Pressable
+              className="flex-1 bg-primary py-4 rounded-xl items-center active:bg-primary/90"
+              onPress={() => router.push("/(tabs)/schedule")}
+            >
+              <Trash2 size={24} color="#ffffff" />
+              <Text className="text-white font-medium mt-2">수거 신청</Text>
+            </Pressable>
+
+            <Pressable
+              className="flex-1 bg-foreground py-4 rounded-xl items-center active:opacity-90"
+              onPress={() => router.push("/(tabs)/cleaning")}
+            >
+              <Sparkles size={24} color="#ffffff" />
+              <Text className="text-white font-medium mt-2">청소 신청</Text>
+            </Pressable>
+          </View>
         </View>
 
         <View className="h-8" />
       </ScrollView>
-    );
-  }
-
-  // ==================== 마스터 대시보드 ====================
-  return (
-    <ScrollView
-      className="flex-1 bg-background"
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#67c0a1" />
-      }
-    >
-      {/* 프로필 헤더 */}
-      {!showSidebar && (
-        <View className="bg-white px-6 py-5 border-b border-border">
-          <View className="flex-row items-center justify-between">
-            <Pressable
-              className="flex-row items-center flex-1"
-              onPress={() => router.push("/profile")}
-            >
-              <View className="w-14 h-14 rounded-full bg-primary/10 items-center justify-center">
-                <User size={28} color="#67c0a1" />
-              </View>
-              <View className="ml-4 flex-1">
-                <Text className="text-lg font-bold text-foreground">
-                  {profile?.name || "이름 없음"}
-                </Text>
-                <Text className="text-sm text-muted">{getRoleLabel(effectiveRole)}</Text>
-              </View>
-            </Pressable>
-            <Pressable className="p-2" onPress={() => router.push("/profile")}>
-              <Settings size={22} color="#6B7280" />
-            </Pressable>
-          </View>
-        </View>
-      )}
-
-      {/* PC 환영 메시지 */}
-      {showSidebar && (
-        <View className="px-8 pt-8 pb-4">
-          <Text className="text-2xl font-bold text-foreground">
-            안녕하세요, {profile?.name || "사용자"}님
-          </Text>
-          <Text className="text-muted mt-1">{getRoleLabel(effectiveRole)}</Text>
-        </View>
-      )}
-
-      {/* 통계 카드들 */}
-      <View className="px-4 pt-4">
-        <View className="flex-row gap-3">
-          <View className="flex-1 bg-white border border-border rounded-xl p-4">
-            <View className="flex-row items-center justify-between">
-              <View className="w-10 h-10 rounded-full bg-surface items-center justify-center">
-                <Briefcase size={20} color="#1F2937" />
-              </View>
-              <Text className="text-2xl font-bold text-foreground">{masterStats.totalProjects}</Text>
-            </View>
-            <Text className="text-sm text-muted mt-2">전체 프로젝트</Text>
-          </View>
-
-          <View className="flex-1 bg-white border border-border rounded-xl p-4">
-            <View className="flex-row items-center justify-between">
-              <View className="w-10 h-10 rounded-full bg-surface items-center justify-center">
-                <TrendingUp size={20} color="#1F2937" />
-              </View>
-              <Text className="text-2xl font-bold text-foreground">{masterStats.completedThisMonth}</Text>
-            </View>
-            <Text className="text-sm text-muted mt-2">이번 달 완료</Text>
-          </View>
-        </View>
-
-        <View className="flex-row gap-3 mt-3">
-          <View className="flex-1 bg-white border border-border rounded-xl p-4">
-            <View className="flex-row items-center justify-between">
-              <View className="w-10 h-10 rounded-full bg-surface items-center justify-center">
-                <Building2 size={20} color="#1F2937" />
-              </View>
-              <Text className="text-2xl font-bold text-foreground">{masterStats.assignedStores}</Text>
-            </View>
-            <Text className="text-sm text-muted mt-2">담당 매장</Text>
-          </View>
-
-          <Pressable
-            className="flex-1 bg-white border border-border rounded-xl p-4 active:opacity-80"
-            onPress={() => router.push("/(tabs)/projects")}
-          >
-            <View className="flex-row items-center justify-between">
-              <View className="w-10 h-10 rounded-full bg-surface items-center justify-center">
-                <Users size={20} color="#1F2937" />
-              </View>
-              <Text className="text-2xl font-bold text-foreground">{masterStats.availableProjects}</Text>
-            </View>
-            <Text className="text-sm text-muted mt-2">지원 가능</Text>
-          </Pressable>
-        </View>
-      </View>
-
-      {/* 캘린더 */}
-      <View className="px-4 mt-4">
-        <DashboardCalendar
-          schedules={schedules}
-          onItemPress={handleScheduleItemPress}
-        />
-      </View>
-
-      {/* 진행 중인 프로젝트 */}
-      <View className="px-4 mt-6">
-        <View className="flex-row items-center justify-between mb-3">
-          <Text className="text-base font-bold text-foreground">
-            진행 중인 프로젝트 ({projects.length})
-          </Text>
-          {projects.length > 3 && (
-            <Pressable onPress={() => router.push("/(tabs)/projects")}>
-              <Text className="text-primary text-sm">전체보기</Text>
-            </Pressable>
-          )}
-        </View>
-
-        {projects.length > 0 ? (
-          <View className="gap-3">
-            {projects.slice(0, 3).map((project) => {
-              const status = getStatusLabel(project.status);
-              return (
-                <Pressable
-                  key={project.id}
-                  className="bg-white border border-border rounded-xl p-4 active:opacity-80"
-                  onPress={() => router.push(`/project/minor/${project.id}`)}
-                >
-                  <View className="flex-row justify-between items-start">
-                    <View className="flex-1">
-                      <Text className="text-foreground font-semibold text-base">
-                        {project.title}
-                      </Text>
-                      {project.major_project?.location && (
-                        <View className="flex-row items-center mt-1.5">
-                          <MapPin size={12} color="#6B7280" />
-                          <Text className="text-muted text-sm ml-1">
-                            {project.major_project.location}
-                          </Text>
-                        </View>
-                      )}
-                      <View className="flex-row items-center mt-1.5">
-                        <CalendarIcon size={12} color="#6B7280" />
-                        <Text className="text-muted text-sm ml-1">
-                          {project.major_project?.scheduled_date || "일정 미정"}
-                        </Text>
-                      </View>
-                    </View>
-                    <View className="flex-row items-center">
-                      <View className={`${status.color} px-3 py-1 rounded-full`}>
-                        <Text className={`${status.textColor} text-sm font-medium`}>
-                          {status.label}
-                        </Text>
-                      </View>
-                      <ChevronRight size={20} color="#9CA3AF" />
-                    </View>
-                  </View>
-                </Pressable>
-              );
-            })}
-          </View>
-        ) : (
-          <View className="bg-white border border-border rounded-xl p-6 items-center">
-            <Briefcase size={32} color="#D1D5DB" />
-            <Text className="text-muted mt-2">진행 중인 프로젝트가 없습니다</Text>
-            <Pressable className="mt-3" onPress={() => router.push("/(tabs)/projects")}>
-              <Text className="text-primary font-medium">프로젝트 찾아보기</Text>
-            </Pressable>
-          </View>
-        )}
-      </View>
-
-      {/* 최근 완료 프로젝트 */}
-      {completedProjects.length > 0 && (
-        <View className="px-4 mt-6">
-          <Text className="text-base font-bold text-foreground mb-3">최근 완료</Text>
-          <View className="gap-3">
-            {completedProjects.map((project) => (
-              <Pressable
-                key={project.id}
-                className="bg-white border border-border rounded-xl p-4 active:opacity-80"
-                onPress={() => router.push(`/project/minor/${project.id}`)}
-              >
-                <View className="flex-row justify-between items-center">
-                  <View className="flex-1">
-                    <Text className="text-foreground font-medium">{project.title}</Text>
-                    <Text className="text-muted text-sm mt-1">
-                      {project.major_project?.scheduled_date || ""}
-                    </Text>
-                  </View>
-                  <View className="bg-surface px-3 py-1 rounded-full">
-                    <Text className="text-muted text-sm font-medium">완료</Text>
-                  </View>
-                </View>
-              </Pressable>
-            ))}
-          </View>
-        </View>
-      )}
-
-      <View className="h-8" />
-    </ScrollView>
+    </View>
   );
 }

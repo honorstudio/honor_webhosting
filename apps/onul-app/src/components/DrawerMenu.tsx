@@ -102,7 +102,15 @@ export default function DrawerMenu({ visible, onClose }: DrawerMenuProps) {
                     <Text className="text-white text-sm mr-2">고객뷰</Text>
                     <Switch
                       value={isClientView}
-                      onValueChange={setClientView}
+                      onValueChange={(enabled) => {
+                        setClientView(enabled);
+                        // 뷰 전환 시 해당 대시보드로 이동
+                        if (enabled) {
+                          router.replace("/(tabs)");
+                        } else {
+                          router.replace("/(tabs)/master-dashboard");
+                        }
+                      }}
                       trackColor={{ false: "rgba(255,255,255,0.3)", true: "#FFFFFF" }}
                       thumbColor={isClientView ? "#67c0a1" : "#f4f3f4"}
                       ios_backgroundColor="rgba(255,255,255,0.3)"
@@ -112,7 +120,11 @@ export default function DrawerMenu({ visible, onClose }: DrawerMenuProps) {
                     <Text className="text-white text-sm mr-2">마스터뷰</Text>
                     <Switch
                       value={isMasterView}
-                      onValueChange={setMasterView}
+                      onValueChange={(enabled) => {
+                        setMasterView(enabled);
+                        // 뷰 전환 시 해당 대시보드로 이동
+                        router.replace("/(tabs)/master-dashboard");
+                      }}
                       trackColor={{ false: "rgba(255,255,255,0.3)", true: "#FFFFFF" }}
                       thumbColor={isMasterView ? "#67c0a1" : "#f4f3f4"}
                       ios_backgroundColor="rgba(255,255,255,0.3)"

@@ -35,8 +35,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **연결된 도메인:**
 - `onul.day` - 오늘 기업 웹사이트
 - `www.onul.day` - 오늘 기업 웹사이트 (www)
-- `app.onul.day` - 오늘 앱 (Expo)
 - `onulmediclean.com` - 오늘 위생산업 랜딩 페이지 (가비아 DNS)
+- `onulmediclean.com/app` - 오늘 앱 (Expo)
 
 ## 프로젝트 구조
 
@@ -62,8 +62,6 @@ honor_webhosting/
 | 도메인 | 용도 | 라우팅 |
 |--------|------|--------|
 | `onul.day` | 오늘 기업 웹사이트 | `/sites/onul` |
-| `app.onul.day` | 오늘 앱 (Expo) | `/onul-app.html` |
-| `app.onul.day/index` | 앱 홍보 랜딩 페이지 | `/sites/onul/index` |
 | `onulmediclean.com` | 오늘 위생산업 랜딩 페이지 | `/sites/onul/index` |
 | `onulmediclean.com/app` | 오늘 앱 (Expo) | `/onul-app.html` |
 
@@ -74,8 +72,6 @@ honor_webhosting/
 │           Vercel (하나의 앱)              │
 ├─────────────────────────────────────────┤
 │  onul.day          ──→ 기업 웹사이트      │
-│  app.onul.day      ──→ Expo 앱          │
-│  app.onul.day/index ──→ 랜딩 페이지       │
 │  onulmediclean.com ──→ 위생산업 랜딩      │
 │  onulmediclean.com/app ──→ Expo 앱      │
 │  clientX.com       ──→ 다른 클라이언트    │
@@ -111,11 +107,36 @@ cp -r dist/_expo ../app/public/
 
 ## 배포 절차
 
-1. Next.js 빌드 및 Vercel 배포 (Git 자동 연동)
-2. Expo 앱 업데이트 시:
-   - `apps/onul-app`에서 `npx expo export --platform web`
-   - `dist/_expo`를 `app/public/_expo`로 복사
-   - Git 커밋 후 자동 배포
+### Next.js 배포
+Git push 시 Vercel 자동 배포
+
+### Expo 앱 배포 (중요!)
+
+**onulmediclean.com/app**에서 Expo 앱을 서빙하므로, 아래 절차를 정확히 따라야 함:
+
+```bash
+# 1. Expo 웹 빌드
+cd apps/onul-app
+npx expo export --platform web
+
+# 2. 빌드 파일을 두 곳에 복사 (중요!)
+cp -r dist/_expo ../app/public/           # /_expo 경로용
+cp -r dist/_expo ../app/public/app/       # /app/_expo 경로용 (onulmediclean.com/app에서 필요)
+
+# 3. onul-app.html의 JS 파일명 업데이트
+# dist/_expo/static/js/web/ 폴더에서 새 파일명 확인 후
+# app/public/onul-app.html의 script src 경로 수정
+
+# 4. Vercel 배포
+cd ../app
+vercel --prod
+```
+
+**주의사항:**
+- `onul-app.html`은 `/app/_expo/...` 경로로 정적 파일 참조
+- `onulmediclean.com/app` 접속 시 미들웨어가 `/onul-app.html`로 리라이트
+- 따라서 `_expo` 폴더가 `public/`와 `public/app/` 두 곳에 있어야 함
+- 빌드할 때마다 JS 파일명이 변경되므로 HTML 업데이트 필수
 
 ## 테스트
 

@@ -2,17 +2,53 @@
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
-    <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no, viewport-fit=cover, user-scalable=no"
+    />
     <title>오늘</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#10b981" />
+    <meta name="description" content="청소 서비스 클라이언트를 위한 프로젝트 관리 앱" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="오늘" />
+    <meta name="application-name" content="오늘" />
+    <meta name="msapplication-TileColor" content="#10b981" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/app/manifest.json" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/app/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/app/icons/icon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/app/icons/icon-16x16.png" />
+
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/app/icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="/app/icons/icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/app/icons/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="167x167" href="/app/icons/icon-152x152.png" />
+
+    <!-- Splash Screens for iOS -->
+    <link rel="apple-touch-startup-image" href="/app/icons/icon-512x512.png" />
+
+    <!-- MS Tile -->
+    <meta name="msapplication-TileImage" content="/app/icons/icon-144x144.png" />
+
+    <!-- The `react-native-web` recommended style reset -->
     <style id="expo-reset">
-      html, body {
+      html,
+      body {
         height: 100%;
       }
       body {
         overflow: hidden;
-        margin: 0;
-        padding: 0;
       }
       #root {
         display: flex;
@@ -20,13 +56,30 @@
         flex: 1;
       }
     </style>
-    <link rel="preload" href="/app/_expo/static/css/web-636e54cd76584c851b1529471bbc3033.css" as="style">
-    <link rel="stylesheet" href="/app/_expo/static/css/web-636e54cd76584c851b1529471bbc3033.css">
-    <link rel="icon" href="/app/favicon.ico" />
+    <link rel="preload" href="/app/_expo/static/css/web-7a4f52f91a9849b825a86cae63d60b93.css" as="style">
+    <link rel="stylesheet" href="/app/_expo/static/css/web-7a4f52f91a9849b825a86cae63d60b93.css">
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/app/sw.js', { scope: '/app/' })
+            .then(function(registration) {
+              console.log('[SW] Registration successful:', registration.scope);
+            })
+            .catch(function(error) {
+              console.log('[SW] Registration failed:', error);
+            });
+        });
+      }
+    </script>
   </head>
+
   <body>
-    <noscript>JavaScript를 활성화해야 이 앱을 사용할 수 있습니다.</noscript>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
     <div id="root"></div>
-    <script src="/app/_expo/static/js/web/entry-9a5fe725bdb371926009d296473cc8b7.js" defer></script>
+    <script src="/app/_expo/static/js/web/entry-fedd40153302ea3693b1febf5f7080db.js" defer></script>
   </body>
 </html>

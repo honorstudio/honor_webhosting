@@ -54,8 +54,31 @@ async function handleCustomDomain(request: NextRequest): Promise<NextResponse | 
         url.pathname = `/sites/${specialDomain.slug}/index`
         return NextResponse.rewrite(url)
       }
+      // /onul-app 정적 파일 경로는 그대로 통과 (public/onul-app 폴더에서 서빙)
+      if (pathname.startsWith('/onul-app/')) {
+        return null
+      }
+      // /app 하위의 정적 파일 요청을 /onul-app/으로 리라이트
+      // - /app/assets, /app/_expo: Expo 빌드 파일
+      // - /app/manifest.json, /app/sw.js: PWA 파일
+      // - /app/icons/: PWA 아이콘
+      // - /app/favicon.ico: 파비콘
+      // node_modules → modules 변환 (Vercel이 node_modules 폴더 무시하기 때문)
+      const staticPaths = ['/app/assets', '/app/_expo', '/app/manifest.json', '/app/sw.js', '/app/icons/', '/app/favicon.ico']
+      if (staticPaths.some(p => pathname.startsWith(p) || pathname === p.replace(/\/$/, ''))) {
+        let newPath = pathname.replace('/app/', '/onul-app/')
+        newPath = newPath.replace('/node_modules/', '/modules/')
+        url.pathname = newPath
+        return NextResponse.rewrite(url)
+      }
       // /app 경로는 Expo 앱으로
       if (pathname === '/app' || pathname.startsWith('/app/')) {
+        url.pathname = '/onul-app.html'
+        return NextResponse.rewrite(url)
+      }
+      // Expo Router 인증 경로도 Expo 앱으로 (/login, /signup 등)
+      const expoRoutes = ['/login', '/signup', '/auth']
+      if (expoRoutes.some(route => pathname === route || pathname.startsWith(route + '/'))) {
         url.pathname = '/onul-app.html'
         return NextResponse.rewrite(url)
       }
@@ -152,6 +175,6 @@ export const config = {
   matcher: [
     // 정적 파일과 API 라우트를 제외한 모든 경로
     // _expo 경로도 제외 (Expo 앱 정적 파일)
-    '/((?!_next/static|_next/image|_expo/|favicon.ico|api/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|html|ico|css|js)$).*)',
+    '/((?!_next/static|_next/image|_expo/|favicon.ico|api/|onul-app/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|html|ico|css|js)$).*)',
   ],
 }

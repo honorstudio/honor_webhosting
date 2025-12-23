@@ -47,25 +47,56 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // 세션 변경 감지
   useEffect(() => {
-    // 초기 세션 확인
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        fetchProfile(session.user.id).then(setProfile);
+    let isMounted = true;
+
+    // 초기 세션 확인 (타임아웃 설정)
+    const initSession = async () => {
+      try {
+        // 5초 타임아웃 설정
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Session timeout')), 5000)
+        );
+
+        const sessionPromise = supabase.auth.getSession();
+
+        const result = await Promise.race([sessionPromise, timeoutPromise]) as any;
+
+        if (!isMounted) return;
+
+        const session = result?.data?.session;
+        setSession(session ?? null);
+        setUser(session?.user ?? null);
+
+        if (session?.user) {
+          const profileData = await fetchProfile(session.user.id);
+          if (isMounted) setProfile(profileData);
+        }
+      } catch (error) {
+        console.error('세션 초기화 오류:', error);
+        // 에러 발생 시에도 로딩 상태 해제
+        if (isMounted) {
+          setSession(null);
+          setUser(null);
+          setProfile(null);
+        }
+      } finally {
+        if (isMounted) setLoading(false);
       }
-      setLoading(false);
-    });
+    };
+
+    initSession();
 
     // 인증 상태 변경 리스너
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        if (!isMounted) return;
+
         setSession(session);
         setUser(session?.user ?? null);
 
         if (session?.user) {
           const profileData = await fetchProfile(session.user.id);
-          setProfile(profileData);
+          if (isMounted) setProfile(profileData);
         } else {
           setProfile(null);
         }
@@ -73,7 +104,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   // 로그인

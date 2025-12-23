@@ -325,8 +325,15 @@ export default function ProjectsScreen() {
         <Pressable
           onPress={() => router.push("/project/create")}
           className="absolute bottom-6 right-6 w-14 h-14 bg-primary rounded-full items-center justify-center shadow-lg active:opacity-80"
+          style={{
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.25,
+            shadowRadius: 4,
+            elevation: 5,
+          }}
         >
-          <Plus size={28} color="#FFFFFF" />
+          <Plus size={24} color="#FFFFFF" />
         </Pressable>
       )}
     </View>

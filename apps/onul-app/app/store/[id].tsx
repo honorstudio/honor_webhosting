@@ -26,6 +26,7 @@ import {
 import { useAuth } from "../../src/contexts/AuthContext";
 import { supabase } from "../../src/lib/supabase";
 import { OnulStore, OnulStoreVisit, OnulProfile } from "../../src/types/database";
+import BottomTabBar from "../../src/components/BottomTabBar";
 
 interface VisitWithMaster extends OnulStoreVisit {
   master?: OnulProfile | null;
@@ -468,6 +469,9 @@ export default function StoreDetailScreen() {
             )}
           </View>
         </ScrollView>
+
+        {/* 하단 탭바 */}
+        <BottomTabBar />
       </View>
     </>
   );

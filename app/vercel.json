@@ -1,0 +1,32 @@
+{
+  "rewrites": [
+    {
+      "source": "/app",
+      "destination": "/onul-app/index.html"
+    },
+    {
+      "source": "/app/(.*)",
+      "destination": "/onul-app/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/app",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/onul-app/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    }
+  ]
+}
