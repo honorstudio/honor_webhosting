@@ -10,6 +10,7 @@ import { createServerClient } from '@supabase/ssr'
 //   - / → 랜딩 페이지 (오늘 위생산업)
 //   - /app → Expo 앱
 const SPECIAL_DOMAINS: Record<string, { slug: string; isExpoApp?: boolean; landingFirst?: boolean }> = {
+  'onul.day': { slug: 'onul' },  // 오늘 기업 웹사이트
   'app.onul.day': { slug: 'onul', isExpoApp: true },
   'onulmediclean.com': { slug: 'onul', landingFirst: true },
 }
@@ -67,7 +68,8 @@ async function handleCustomDomain(request: NextRequest): Promise<NextResponse | 
       const staticPaths = ['/app/assets', '/app/_expo', '/app/manifest.json', '/app/sw.js', '/app/icons/', '/app/favicon.ico']
       if (staticPaths.some(p => pathname.startsWith(p) || pathname === p.replace(/\/$/, ''))) {
         let newPath = pathname.replace('/app/', '/onul-app/')
-        newPath = newPath.replace('/node_modules/', '/modules/')
+        // 모든 node_modules를 modules로 변환 (중첩된 경우도 처리)
+        newPath = newPath.replace(/\/node_modules\//g, '/modules/')
         url.pathname = newPath
         return NextResponse.rewrite(url)
       }
@@ -176,5 +178,7 @@ export const config = {
     // 정적 파일과 API 라우트를 제외한 모든 경로
     // _expo 경로도 제외 (Expo 앱 정적 파일)
     '/((?!_next/static|_next/image|_expo/|favicon.ico|api/|onul-app/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|html|ico|css|js)$).*)',
+    // /app/assets 경로는 node_modules -> modules 변환을 위해 포함
+    '/app/assets/:path*',
   ],
 }
